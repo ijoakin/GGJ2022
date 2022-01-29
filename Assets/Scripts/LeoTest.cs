@@ -6,7 +6,6 @@ public class LeoTest : MonoBehaviour
 {
     public Bar Bar;
     public Button Button;
-    public GameObject Blood;
 
     // Start is called before the first frame update
     void Start()
