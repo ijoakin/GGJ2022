@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource[] soundEffects;
 
+    [SerializeField] private AudioSource sfxAudioSource;
+
     public AudioSource BGMusic;
     public AudioSource levelEndMusic;
 
@@ -35,5 +37,10 @@ public class AudioManager : MonoBehaviour
         soundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
 
         soundEffects[soundToPlay].Play();
+    }
+
+    public void PlaySfxByAudioClip(AudioClip sfx)
+    {
+        sfxAudioSource.PlayOneShot(sfx);
     }
 }
