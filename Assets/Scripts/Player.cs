@@ -17,6 +17,14 @@ public class Player : MonoBehaviour, IDamageTarget
     private float puncherCount;
     private float puncherTotal = 0.5f;
 
+    public enum PlayerMode
+    {
+        PUNK = 0,
+        MONK = 1
+    }
+
+    private PlayerMode playerMode;
+
     private void Awake()
     {
         Instance = this;
@@ -30,6 +38,8 @@ public class Player : MonoBehaviour, IDamageTarget
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         puncherCount = puncherTotal;
+
+        this.playerMode = PlayerMode.PUNK;
     }
 
     // Update is called once per frame
@@ -41,9 +51,62 @@ public class Player : MonoBehaviour, IDamageTarget
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
+        //TODO: Remove this -> testing monk
+        if (Input.GetButtonDown("Fire2"))
+        {
+            if (playerMode == PlayerMode.PUNK)
+                ConvertToMonk();
+            else
+                ConvertToPunk();
+        }
+
+        if (playerMode == PlayerMode.PUNK)
+            UpdatePunk();
+        else
+            UpdateMonk();
+    }
+    private void UpdateMonk()
+    {
+
+        if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
+        {
+            animator.SetBool("Monk_Kick", true);
+        }
+
+        if (animator.GetBool("Monk_Kick"))
+        {
+            puncherCount -= Time.deltaTime;
+            if (puncherCount <= 0)
+            {
+                puncherCount = puncherTotal;
+                animator.SetBool("Monk_Kick", false);
+            }
+        }
+
+        if (rigidbody.velocity.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (this.rigidbody.velocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+
+        if (rigidbody.velocity.x != 0)
+        {
+            animator.SetBool("Monk_Walk", true);
+        }
+        else
+        {
+            animator.SetBool("Monk_Walk", false);
+        }
+    }
+
+    private void UpdatePunk()
+    {
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Punch"))
         {
             animator.SetBool("Punch", true);
@@ -68,6 +131,8 @@ public class Player : MonoBehaviour, IDamageTarget
             animator.SetBool("Walk", false);
         }
 
+
+
         if (rigidbody.velocity.x > 0)
         {
             spriteRenderer.flipX = true;
@@ -75,9 +140,24 @@ public class Player : MonoBehaviour, IDamageTarget
         else if (this.rigidbody.velocity.x < 0)
         {
             spriteRenderer.flipX = false;
-            
+
         }
     }
+
+    public void ConvertToMonk()
+    {
+        //TODO: FireBall animation
+        animator.SetBool("Monk_Idle", true);
+        this.playerMode = PlayerMode.MONK;
+    }
+
+    public void ConvertToPunk()
+    {
+        animator.SetBool("Monk_Idle", false);
+        animator.SetBool("Monk_Walk", false);
+        this.playerMode = PlayerMode.PUNK;
+    }
+
 
     public void TakeDamage(float damagePoints)
     {
