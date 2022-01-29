@@ -3,7 +3,7 @@ using UnityEngine;
 public class BackgroundLogic : MonoBehaviour
 {
     public Bar Bar;
-    public ContextAlpha ContextAlpha;
+    public GameObject Red;
 
     // Start is called before the first frame update
     void Start()
@@ -13,13 +13,17 @@ public class BackgroundLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float newAlpha = ContextAlpha.ChargeToAlpha(Bar.CurrentCharge);
+        float newAlpha = ChargeToAlpha(Bar.CurrentCharge);
         Color newColor;
-        foreach (SpriteRenderer sr in GameObject.Find("red").gameObject.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer sr in Red.gameObject.GetComponentsInChildren<SpriteRenderer>())
         {
-            newColor = new Color(sr.color.r, sr.color.g, sr.color.b);
-            newColor.a = newAlpha;
+            newColor = new Color(sr.color.r, sr.color.g, sr.color.b, newAlpha);
             sr.color = newColor;
         }       
+    }
+
+    float ChargeToAlpha(float charge)
+    {
+        return charge >= 0 ? 0.0f : -charge / 100.0f;
     }
 }
