@@ -74,7 +74,7 @@ public abstract class EnemyGameObject : MonoBehaviour, IDamageTarget
         }
     }
 
-    public void TakeDamage(float damagePoints)
+    public void TakeDamage(int damagePoints)
     {
         if (enemyIsDead) return;
 

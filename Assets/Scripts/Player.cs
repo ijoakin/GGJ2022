@@ -16,6 +16,14 @@ public class Player : MonoBehaviour, IDamageTarget
     private SpriteRenderer spriteRenderer;
     private float puncherCount;
     private float puncherTotal = 0.5f;
+    private BoxCollider2D boxCollider;
+
+    private float fireBallCount;
+    private float fireBallTotal = 2.2f;
+
+    private float zenCount;
+    private float zenTotal = 0.75f;
+
 
     public enum PlayerMode
     {
@@ -37,6 +45,8 @@ public class Player : MonoBehaviour, IDamageTarget
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+
         puncherCount = puncherTotal;
 
         this.playerMode = PlayerMode.PUNK;
@@ -62,6 +72,14 @@ public class Player : MonoBehaviour, IDamageTarget
             else
                 ConvertToPunk();
         }
+        //TODO: Remove this -> testing monk zen
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (playerMode == PlayerMode.MONK)
+                ConvertToZen();
+            else
+                ConvertToMonk();
+        }
 
         if (playerMode == PlayerMode.PUNK)
             UpdatePunk();
@@ -83,6 +101,26 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
+            }
+        }
+
+        if (animator.GetBool("FireBall"))
+        {
+            fireBallCount -= Time.deltaTime;
+            if (fireBallCount <= 0)
+            {
+                animator.SetBool("Monk_Idle", true);
+                animator.SetBool("FireBall", false);
+            }
+        }
+
+        if (animator.GetBool("Zen"))
+        {
+            zenCount -= Time.deltaTime;
+            if (zenCount <= 0)
+            {
+                animator.SetBool("Zen", false);
+                animator.SetBool("ZenContinue", true);
             }
         }
 
@@ -131,8 +169,6 @@ public class Player : MonoBehaviour, IDamageTarget
             animator.SetBool("Walk", false);
         }
 
-
-
         if (rigidbody.velocity.x > 0)
         {
             spriteRenderer.flipX = true;
@@ -140,15 +176,27 @@ public class Player : MonoBehaviour, IDamageTarget
         else if (this.rigidbody.velocity.x < 0)
         {
             spriteRenderer.flipX = false;
-
         }
+    }
+
+    public void ConvertToZen()
+    {
+        zenCount = zenTotal;
+
+        //TODO: FireBall animation
+        animator.SetBool("Zen", true);
     }
 
     public void ConvertToMonk()
     {
+
+        fireBallCount = fireBallTotal;
+
         //TODO: FireBall animation
-        animator.SetBool("Monk_Idle", true);
+        animator.SetBool("FireBall", true);
         this.playerMode = PlayerMode.MONK;
+
+        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
@@ -156,11 +204,16 @@ public class Player : MonoBehaviour, IDamageTarget
         animator.SetBool("Monk_Idle", false);
         animator.SetBool("Monk_Walk", false);
         this.playerMode = PlayerMode.PUNK;
+
+        boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
     }
 
 
-    public void TakeDamage(float damagePoints)
+    public void TakeDamage(int damagePoints)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+
+        GameLogic.Instance.Charge(damagePoints);
+
     }
 }
