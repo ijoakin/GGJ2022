@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageTarget
 {
     public static Player Instance;
     public float JumpForce;
@@ -79,9 +79,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Damage(int damageValue)
+    public void TakeDamage(float damagePoints)
     {
-        //Barrita instance damageValue
-
+        throw new System.NotImplementedException();
     }
 }
