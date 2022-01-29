@@ -6,6 +6,8 @@ public class LeoTest : MonoBehaviour
 {
     public Bar Bar;
     public Button Button;
+    public GameObject Blood;
+    public ContextAlpha ContextAlpha;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class LeoTest : MonoBehaviour
     void DoClick()
     {
         int v = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
-        Bar.Charge(v);
+        int currentCharge = Bar.Charge(v);
+
+        ContextAlpha.ApplyChargeToAlpha(currentCharge, Blood.GetComponent<SpriteRenderer>());
     }
 }
