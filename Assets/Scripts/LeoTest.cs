@@ -18,16 +18,15 @@ public class LeoTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject.Find("Charge").GetComponent<TextMeshProUGUI>().text = ""
-            + GameObject.Find("Slider").GetComponent<Slider>().value;
+        // Text of Slider Value
+        float sliderValue = GameObject.Find("Slider").GetComponent<Slider>().value;
+        GameObject.Find("SliderValue").GetComponent<TextMeshProUGUI>().text = "" + sliderValue;
 
-        GameObject.Find("Value").GetComponent<TextMeshProUGUI>().text = "" + Bar.CurrentCharge;
+        // Automatic Bar Value from Slider
+        Bar.CurrentCharge = (int)sliderValue;
+        GameObject.Find("BarChargeValue").GetComponent<TextMeshProUGUI>().text = "" + Bar.CurrentCharge;
     }
     void DoClick()
     {
-        int v = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
-        int currentCharge = Bar.Charge(v);
-
-        ContextAlpha.ApplyChargeToAlpha(currentCharge, Blood.GetComponent<SpriteRenderer>());
     }
 }

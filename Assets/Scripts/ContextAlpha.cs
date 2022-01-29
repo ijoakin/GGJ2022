@@ -12,10 +12,8 @@ public class ContextAlpha : MonoBehaviour
     {
     }
 
-    public void ApplyChargeToAlpha(float charge, SpriteRenderer spriteRenderer)
+    public float ChargeToAlpha(float charge)
     {
-        Color color = spriteRenderer.color;
-        color.a = charge >= 0 ? 0.0f : -charge / 100.0f;
-        spriteRenderer.color = color;
+        return charge >= 0 ? 0.0f : -charge / 100.0f;
     }
 }
