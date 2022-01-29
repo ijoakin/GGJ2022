@@ -64,21 +64,32 @@ public class Player : MonoBehaviour, IDamageTarget
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
-        //TODO: Remove this -> testing monk
-        if (Input.GetButtonDown("Fire2"))
+        ////TODO: Remove this -> testing monk
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    if (playerMode == PlayerMode.PUNK)
+        //        ConvertToMonk();
+        //    else
+        //        ConvertToPunk();
+        //}
+        ////TODO: Remove this -> testing monk zen
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    if (playerMode == PlayerMode.MONK)
+        //        ConvertToZen();
+        //    else
+        //        ConvertToMonk();
+        //}
+        //TODO: Remove this-> testing charge
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (playerMode == PlayerMode.PUNK)
-                ConvertToMonk();
-            else
-                ConvertToPunk();
+            TakeDamage(10);
         }
-        //TODO: Remove this -> testing monk zen
-        if (Input.GetKeyDown(KeyCode.Q))
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (playerMode == PlayerMode.MONK)
-                ConvertToZen();
-            else
-                ConvertToMonk();
+            TakeDamage(-10);
         }
 
         if (playerMode == PlayerMode.PUNK)
@@ -194,6 +205,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
         //TODO: FireBall animation
         animator.SetBool("FireBall", true);
+        animator.SetBool("ZenContinue", false);
         this.playerMode = PlayerMode.MONK;
 
         boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
@@ -203,6 +215,7 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         animator.SetBool("Monk_Idle", false);
         animator.SetBool("Monk_Walk", false);
+        animator.SetBool("FireBall", false);
         this.playerMode = PlayerMode.PUNK;
 
         boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
@@ -212,7 +225,7 @@ public class Player : MonoBehaviour, IDamageTarget
     public void TakeDamage(int damagePoints)
     {
         //throw new System.NotImplementedException();
-
+        
         GameLogic.Instance.Charge(damagePoints);
 
     }

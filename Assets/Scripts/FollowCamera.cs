@@ -19,8 +19,8 @@ public class FollowCamera : MonoBehaviour
     {
         target = GameObject.Find("Player").transform;
 
-        //farBackGround = GameObject.Find("back").transform;
-        //middleBackGround = GameObject.Find("middle").transform;
+        farBackGround = GameObject.Find("back").transform;
+        middleBackGround = GameObject.Find("middle").transform;
 
         lastPosX = transform.position.x;
         lastPosY = transform.position.y;
@@ -29,15 +29,21 @@ public class FollowCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
+        transform.position = new Vector3(target.position.x, transform.position.y, transform.position.z);
 
-        //float amountToMoveX = transform.position.x - lastPosX;
-        //float amountToMoveY = transform.position.y - lastPosY;
+        float amountToMoveX = transform.position.x - lastPosX;
+        float amountToMoveY = transform.position.y - lastPosY;
 
-        //farBackGround.position = farBackGround.position + new Vector3(amountToMoveX, amountToMoveY, 0f);
-        //middleBackGround.position = middleBackGround.position + new Vector3(amountToMoveX * .5f, amountToMoveY * .5f, 0f);
+        if (amountToMoveX != 0)
+        {
+            farBackGround.position = farBackGround.position + new Vector3(amountToMoveX, amountToMoveY, 0f);
+            middleBackGround.position = middleBackGround.position + new Vector3(amountToMoveX * .5f, amountToMoveY * .5f, 0f);
+        }
 
 
-        
+
+
+        lastPosX = transform.position.x;
+        lastPosY = transform.position.y;
     }
 }

@@ -32,17 +32,20 @@ public class GameLogic : MonoBehaviour
         //TODO: call the bar to charge and get the currentValue
         //currentCharge = 50;
 
-        
-            
+        //currentCharge = Bar.Instance.CurrentCharge;
+        Bar.Instance.Charge(value);
+        CheckCharge();
+
     }
     public void CheckCharge()
     {
-        
-        if (currentCharge > valueMonk && currentCharge < valueZen)
+        currentCharge = Bar.Instance.CurrentCharge;
+        Debug.Log(currentCharge);
+        if (currentCharge >= valueMonk && currentCharge < valueZen)
         {
             Player.Instance.ConvertToMonk();
         }
-        if (currentCharge > valueZen)
+        if (currentCharge >= valueZen)
         {
             Player.Instance.ConvertToZen();
         }

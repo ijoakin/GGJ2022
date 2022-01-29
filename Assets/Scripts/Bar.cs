@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bar : MonoBehaviour
 {
+    public static Bar Instance;
     public const int CHARGE_MIN = -100;
     public const int CHARGE_MAX = 100;
 
@@ -9,6 +10,11 @@ public class Bar : MonoBehaviour
     public int CurrentCharge;
 
     public GameObject Needle;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
