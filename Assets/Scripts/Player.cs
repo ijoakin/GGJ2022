@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageTarget
@@ -17,6 +18,11 @@ public class Player : MonoBehaviour, IDamageTarget
     private SpriteRenderer spriteRenderer;
     private float puncherCount;
     private float puncherTotal = 0.5f;
+
+    private float kickCount;
+    private float kickTotal = 0.5f;
+
+
     private BoxCollider2D boxCollider;
 
     private float fireBallCount;
@@ -29,7 +35,11 @@ public class Player : MonoBehaviour, IDamageTarget
     private float invicibleCounter;
 
     private float chargeCount;
-    private float chargeLenght = 2.5f;
+    private float chargeLenght = 2.3f;
+
+    private AnimatorClipInfo[] animatorinfo;
+    private string current_animation;
+
 
     [Header("Attack")]
     [SerializeField] private PunchController punchController;
@@ -62,16 +72,20 @@ public class Player : MonoBehaviour, IDamageTarget
         boxCollider = GetComponent<BoxCollider2D>();
 
         puncherCount = puncherTotal;
+        kickCount = kickTotal;
         invicibleCounter = 0;
         this.playerMode = PlayerMode.PUNK;
 
         chargeCount = chargeLenght;
+        Charge(40);
     }
+
 
     bool isIdle()
     {
-        
-        if (animator.GetBool("Monk_Idle"))
+        //Debug.Log($"{animator.GetBool("Monk_Idle")}");
+
+        if (current_animation == "Player_Monk_Idle")
         {
             return true;
         }
@@ -84,13 +98,20 @@ public class Player : MonoBehaviour, IDamageTarget
         return false;
     }
 
+    
+    
     // Update is called once per frame
     void Update()
     {
+
+        animatorinfo = this.animator.GetCurrentAnimatorClipInfo(0);
+        current_animation = animatorinfo[0].clip.name;
+
         rigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
 
         isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
-
+        //Debug.Log($"{chargeCount}: {isIdle()}");
+        
         if ((chargeCount >= 0) && isIdle())
         {
             chargeCount -= Time.deltaTime;
@@ -165,18 +186,18 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
         {
             animator.SetBool("Monk_Kick", true);
+            PlayerSounds.Instance.PlayJumpMonk();
             Punch();
         }
 
         if (animator.GetBool("Monk_Kick"))
         {
-            puncherCount -= Time.deltaTime;
-            if (puncherCount <= 0)
+            kickCount -= Time.deltaTime;
+
+            if (kickCount <= 0)
             {
-                puncherCount = puncherTotal;
+                kickCount = kickTotal;
                 animator.SetBool("Monk_Kick", false);
-                
-                PlayerSounds.Instance.PlayJumpMonk();
             }
         }
 
@@ -301,22 +322,6 @@ public class Player : MonoBehaviour, IDamageTarget
         boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
     }
    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
-        {
-            if (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"))
-            {
-                var component = collision.gameObject.GetComponent<DamageController>();
-
-                if (component != null)
-                {
-                    //take damage!!!
-                    component.ApplyDamage(gameObject, 3);
-                }
-            }
-        }
-    }
 
     public void Charge(int value)
     {
@@ -325,7 +330,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void TakeDamage(int damagePoints)
     {
-        damagePoints *= -1;
+        damagePoints = -5;
         //throw new System.NotImplementedException();
         var isFigthing = (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"));
 

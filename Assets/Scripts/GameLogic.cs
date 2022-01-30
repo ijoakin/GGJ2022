@@ -11,12 +11,12 @@ public class GameLogic : MonoBehaviour
     [Range(-100, 100)]
     public int currentCharge = 0;
 
-    public int valueMonk = 41;
-    public int valueZen = 91;
+    private int valueMonk = 41;
+    private int valueZen = 91;
 
-    public int FuryPunk = -40;
-    public int Monk = 41;
-    public int MonkZen = 91;
+    private int FuryPunk = -40;
+    private int Monk = 41;
+    private int MonkZen = 91;
 
     private void Awake()
     {
@@ -52,15 +52,15 @@ public class GameLogic : MonoBehaviour
             Debug.Log(currentCharge);
         }
         
-        if (currentCharge >= valueMonk && currentCharge < valueZen)
-        {
-            Player.Instance.ConvertToMonk();
-        }
         if (currentCharge >= valueZen)
         {
             Player.Instance.ConvertToZen();
         }
-        if (currentCharge < valueMonk)
+        else if (currentCharge >= valueMonk && currentCharge < valueZen)
+        {
+            Player.Instance.ConvertToMonk();
+        }
+        else if (currentCharge < valueMonk)
         {
             Player.Instance.ConvertToPunk();
         }
