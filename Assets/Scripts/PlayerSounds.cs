@@ -5,16 +5,15 @@ using UnityEngine;
 public class PlayerSounds : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static PlayerSounds instance;
+    public static PlayerSounds Instance;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     public void PlayPunch()
     {
-        var audioId = Random.Range(10, 14);
-        AudioManager.instance.PlaySFX(audioId);
+        AudioManager.Instance.PlayRandom(AudioManager.AudioId.PUNK_PINA_1, AudioManager.AudioId.PUNK_PINA_5);
     }
 }

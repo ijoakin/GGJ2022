@@ -1,71 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
+    public static AudioManager Instance;
 
     public AudioSource[] soundEffects;
 
-    [SerializeField] private AudioSource sfxAudioSource;
-
-    public AudioSource BGMusic;
-    public AudioSource levelEndMusic;
+    //[SerializeField]
+    //private AudioSource sfxAudioSource;
+    //public AudioSource BGMusic;
+    //public AudioSource levelEndMusic;
 
     public enum AudioId
     {
-        MONJESALTA1 = 0,
-        MONJESALTA2 = 1,
-        MONJETRANS = 2,
-        PUNKERRA1 = 3,
-        PUNKERRA2 = 4,
-        PUNKERRA3 = 5,
-        PUNKERRA4 = 6,
-        PUNKIRAAL80 = 7,
-        PUNKIRAAL80_2 = 8,
-        PUNKIRAAL80_3 = 9,
+        MONJE_SALTA_1,
+        MONJE_SALTA_2,
 
-        PUNKPINA1 = 10,
-        PUNKPINA2 = 11,
-        PUNKPINA3 = 12,
-        PUNKPINA4 = 13,
-        PUNKPINA5 = 14,
+        MONJE_TRANS,
 
-        PUNKSALTO1 = 15,
-        PUNKSALTO2 = 16,
-        PUNKSALTO3 = 17,
+        PUNK_ERRA_1,
+        PUNK_ERRA_2,
+        PUNK_ERRA_3,
+        PUNK_ERRA_4,
+
+        PUNK_IRA_AL_80_1,
+        PUNK_IRA_AL_80_2,
+        PUNK_IRA_AL_80_3,
+
+        PUNK_PINA_1,
+        PUNK_PINA_2,
+        PUNK_PINA_3,
+        PUNK_PINA_4,
+        PUNK_PINA_5,
+
+        PUNK_SALTO_1,
+        PUNK_SALTO_2,
+        PUNK_SALTO_3,
     }
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
 
+    public void PlayRandom(AudioId audioMin, AudioId audioMax)
+    {
+        int indexMin = (int)audioMin;
+        int indexMax = (int)audioMax;
+        if (indexMax <= indexMin)
+        {
+            Debug.Log($"PlayRandom ERROR: indexMax <= indexMin ({indexMax}) ({indexMin})");
+            return;
+        }
+        PlaySFX(Random.Range(indexMin, indexMax));
     }
 
     public void PlaySFX(int soundToPlay)
     {
         soundEffects[soundToPlay].Stop();
-
         soundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
-
         soundEffects[soundToPlay].Play();
     }
 
-
-    public void PlaySfxByAudioClip(AudioClip sfx)
-    {
-        //sfxAudioSource.PlayOneShot(sfx);
-    }
+    //public void PlaySfxByAudioClip(AudioClip sfx)
+    //{
+    //    sfxAudioSource.PlayOneShot(sfx);
+    //}
 }
