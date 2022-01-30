@@ -31,8 +31,6 @@ public class Player : MonoBehaviour, IDamageTarget
     private float chargeCount;
     private float chargeLenght = 2.5f;
 
-    public PlayerState currentState;
-     
     [Header("Attack")]
     [SerializeField] private PunchController punchController;
     [SerializeField] private GameObject punchPrefab;
@@ -46,21 +44,6 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         PUNK = 0,
         MONK = 1
-    }
-
-    public enum PlayerState
-    {
-        IDLE = -1,
-        PUNK = 0,
-        PUNK_PUNCH = 1,
-        PUNK_JUMP = 2,
-        PUNK_WALK = 3,
-        FIREBALL = 4,
-        MONK = 5,
-        MONK_WALK = 6,
-        MONK_KICK = 7,
-        MONK_ZEND = 8,
-        MONK_ZEND_CONTINUE = 9
     }
 
     private PlayerMode playerMode;
@@ -276,11 +259,15 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void ConvertToZen()
     {
-        zenCount = zenTotal;
+        if (!animator.GetBool("ZenContinue"))
+        {
+            zenCount = zenTotal;
 
-        //TODO: FireBall animation
-        animator.SetBool("Zen", true);
-        PlayerSounds.Instance.PlayTransformationZen();
+            //TODO: FireBall animation
+            animator.SetBool("Zen", true);
+            PlayerSounds.Instance.PlayTransformationZen();
+        }
+        
     }
 
     public void ConvertToMonk()
@@ -330,19 +317,6 @@ public class Player : MonoBehaviour, IDamageTarget
         }
     }
 
-    private void ApplyDamage(GameObject gameObject)
-    {
-        if (gameObject.tag == "Enemy")
-        {
-            var component = gameObject.GetComponent<IDamageTarget>();
-            if (component != null)
-            {
-                component.TakeDamage(damagePoints);
-                Destroy(this.gameObject);
-            }
-        }
-    }
-
     public void Charge(int value)
     {
         GameLogic.Instance.Charge(value);
@@ -365,10 +339,12 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if ((this.rigidbody.velocity.x > 0) && (this.playerMode != PlayerMode.MONK))
+        if (this.rigidbody.velocity.x > 0)
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
+
+        //rigidbody.AddForce(new Vector2(100f, 5f));
 
         PlayerSounds.Instance.PlayPunch();
     }
