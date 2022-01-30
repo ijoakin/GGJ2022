@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpForce: 12
   MoveSpeed: 7.2
+  bounceForce: 15
   GroundCheckPoint: {fileID: 6004952763806033847}
   WhatLayerIsGround:
     serializedVersion: 2

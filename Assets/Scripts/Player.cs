@@ -8,6 +8,7 @@ public class Player : MonoBehaviour, IDamageTarget
     public static Player Instance;
     public float JumpForce;
     public float MoveSpeed;
+    public float bounceForce = 15f;
     public GameObject GroundCheckPoint;
     public LayerMask WhatLayerIsGround;
 
@@ -25,11 +26,29 @@ public class Player : MonoBehaviour, IDamageTarget
     private float zenCount;
     private float zenTotal = 0.75f;
 
+    private float invicibleLenght = 2f;
+    private float invicibleCounter;
+
+
 
     public enum PlayerMode
     {
         PUNK = 0,
         MONK = 1
+    }
+
+    public enum PlayerStates
+    {
+        PUNK = 0,
+        PUNK_PUNCH = 1,
+        PUNK_JUMP = 2,
+        PUNK_WALK = 3,
+        FIREBALL = 4,
+        MONK = 5,
+        MONK_WALK = 6,
+        MONK_KICK = 7,
+        MONK_ZEND = 8,
+        MONK_ZEND_CONTINUE = 9
     }
 
     private PlayerMode playerMode;
@@ -49,13 +68,25 @@ public class Player : MonoBehaviour, IDamageTarget
         boxCollider = GetComponent<BoxCollider2D>();
 
         puncherCount = puncherTotal;
-
+        invicibleCounter = 0;
         this.playerMode = PlayerMode.PUNK;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (invicibleCounter >= 0)
+        {
+            invicibleCounter -= Time.deltaTime; //one second    
+
+            if (invicibleCounter <= 0)
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            }
+            return;
+        }
+
         rigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
 
         isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
@@ -67,24 +98,7 @@ public class Player : MonoBehaviour, IDamageTarget
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
-        ////TODO: Remove this -> testing monk
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-        //    if (playerMode == PlayerMode.PUNK)
-        //        ConvertToMonk();
-        //    else
-        //        ConvertToPunk();
-        //}
-        ////TODO: Remove this -> testing monk zen
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    if (playerMode == PlayerMode.MONK)
-        //        ConvertToZen();
-        //    else
-        //        ConvertToMonk();
-        //}
-        //TODO: Remove this-> testing charge
-
+        //Remove this. the enemy will call TakeDamage
         if (Input.GetKeyDown(KeyCode.E))
         {
             TakeDamage(10);
@@ -227,13 +241,43 @@ public class Player : MonoBehaviour, IDamageTarget
 
         boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
     }
+   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy")
+        {
+            if (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"))
+            {
+                var component = collision.gameObject.GetComponent<DamageController>();
 
+                if (component != null)
+                {
+                    
+                }
+            }
+        }
+    }
 
     public void TakeDamage(int damagePoints)
     {
         //throw new System.NotImplementedException();
-        
-        GameLogic.Instance.Charge(damagePoints);
+        var isFigthing = (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"));
 
+        if (!isFigthing)
+        {
+            Bounce();
+            invicibleCounter = invicibleLenght;
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, .5f);
+            GameLogic.Instance.Charge(damagePoints);
+        }
+    }
+    public void Bounce()
+    {
+        var xbounceForce = bounceForce;
+        if (this.rigidbody.velocity.x > 0)
+            xbounceForce *= -1f;
+
+        rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
+        AudioManager.instance.PlaySFX(10);
     }
 }
