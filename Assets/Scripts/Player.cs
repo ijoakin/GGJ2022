@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static AudioManager;
 
 public class Player : MonoBehaviour, IDamageTarget
 {
@@ -128,7 +127,8 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             var audioId = Random.Range(15, 17);
-            AudioManager.Instance.PlaySFX(audioId);
+            PlayerSounds.Instance.PlayJumpPunk();
+
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
@@ -163,7 +163,8 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
-                AudioManager.Instance.PlaySFX((int)AudioId.MONJE_SALTA_2);
+                
+                PlayerSounds.Instance.PlayJumpMonk();
             }
         }
 
@@ -251,6 +252,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
         //TODO: FireBall animation
         animator.SetBool("Zen", true);
+        PlayerSounds.Instance.PlayTransformationZen();
     }
 
     public void ConvertToMonk()
@@ -259,7 +261,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             fireBallCount = fireBallTotal;
 
-            AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
+            PlayerSounds.Instance.PlayTransformation();
 
             //TODO: FireBall animation
             animator.SetBool("FireBall", true);
@@ -335,10 +337,11 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if ((this.rigidbody.velocity.x > 0) && (this.playerMode == PlayerMode.MONK))
+        if ((this.rigidbody.velocity.x > 0) && (this.playerMode != PlayerMode.MONK))
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
-        AudioManager.Instance.PlaySFX(10);
+
+        PlayerSounds.Instance.PlayPunch();
     }
 }
