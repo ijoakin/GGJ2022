@@ -45,3 +45,9 @@ TagManager:
   - name: Character
     uniqueID: 3409237861
     locked: 0
+  - name: Enemy
+    uniqueID: 629050491
+    locked: 0
+  - name: VisualEffect
+    uniqueID: 2118259451
+    locked: 0
