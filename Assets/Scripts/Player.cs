@@ -30,9 +30,11 @@ public class Player : MonoBehaviour, IDamageTarget
     private float invicibleCounter;
 
     private float chargeCount;
-    private float chargeLenght = 5f;
+    private float chargeLenght = 2.5f;
 
     public PlayerState currentState;
+
+    private bool IsConverting = false;
 
     public enum PlayerMode
     {
@@ -130,7 +132,7 @@ public class Player : MonoBehaviour, IDamageTarget
         //Remove this. the enemy will call TakeDamage
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Charge(100);
+            Charge(10);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -169,6 +171,7 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 animator.SetBool("Monk_Idle", true);
                 animator.SetBool("FireBall", false);
+                IsConverting = false;
             }
         }
 
@@ -249,19 +252,21 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void ConvertToMonk()
     {
+        if (!IsConverting && playerMode != PlayerMode.MONK)
+        {
+            fireBallCount = fireBallTotal;
 
-        fireBallCount = fireBallTotal;
+            AudioManager.instance.PlaySFX((int)AudioId.MONJETRANS);
+
+            //TODO: FireBall animation
+            animator.SetBool("FireBall", true);
+            animator.SetBool("ZenContinue", false);
+            this.playerMode = PlayerMode.MONK;
+
+            boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
+            IsConverting = true;
+        }
         
-        
-        AudioManager.instance.PlaySFX((int) AudioId.MONJETRANS);
-
-
-        //TODO: FireBall animation
-        animator.SetBool("FireBall", true);
-        animator.SetBool("ZenContinue", false);
-        this.playerMode = PlayerMode.MONK;
-
-        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
