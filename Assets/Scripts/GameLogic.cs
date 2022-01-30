@@ -10,8 +10,15 @@ public class GameLogic : MonoBehaviour
     [Range(-100, 100)]
     public int currentCharge = 0;
 
-    public int valueMonk = 50;
-    public int valueZen = 75;
+    public int valueMonk = 41;
+    public int valueZen = 91;
+
+    //public int RegularPunk;
+    public int FuryPunk = -40;
+    public int Monk = 41;
+    public int MonkZen = 91;
+
+
 
     private void Awake()
     {
