@@ -1400,6 +1400,66 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8372375987487357389, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987628198940, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987672902174, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987936976077, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987949626776, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988247490626, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988349893473, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988452380647, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988538255570, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988579945188, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988680528373, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988752825831, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988872006555, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988962909280, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375988971355457, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_RootOrder
       value: 8
