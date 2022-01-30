@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour
         PUNK_ERRA_2,
         PUNK_ERRA_3,
         PUNK_ERRA_4,
+        PUNK_ERRA_5,
 
         MONJE_SALTA_1,
         MONJE_SALTA_2,
