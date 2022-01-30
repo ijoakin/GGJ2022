@@ -77,9 +77,7 @@ public class Player : MonoBehaviour, IDamageTarget
         this.playerMode = PlayerMode.PUNK;
 
         chargeCount = chargeLenght;
-        Charge(40);
     }
-
 
     bool isIdle()
     {
