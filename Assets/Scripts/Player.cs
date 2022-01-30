@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AudioManager;
 
 public class Player : MonoBehaviour, IDamageTarget
 {
@@ -112,6 +113,7 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
+                AudioManager.instance.PlaySFX((int)AudioId.MONJESALTA1);
             }
         }
 

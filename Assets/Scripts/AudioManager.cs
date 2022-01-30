@@ -13,6 +13,12 @@ public class AudioManager : MonoBehaviour
     public AudioSource BGMusic;
     public AudioSource levelEndMusic;
 
+    public enum AudioId
+    {
+        MONJESALTA1 = 0,
+        MONJESALTA2 = 1
+    }
+
     private void Awake()
     {
         instance = this;
