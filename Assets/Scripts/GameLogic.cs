@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     public static GameLogic Instance;
+    public bool DebugCurrentCharge;
 
     [SerializeField]
     [Range(-100, 100)]
@@ -30,6 +31,7 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayMusicByCharge();
     }
 
     public void Charge(int value)
@@ -45,7 +47,11 @@ public class GameLogic : MonoBehaviour
     public void CheckCharge()
     {
         currentCharge = Bar.Instance.CurrentCharge;
-        Debug.Log(currentCharge);
+        if (DebugCurrentCharge)
+        {
+            Debug.Log(currentCharge);
+        }
+        
         if (currentCharge >= valueMonk && currentCharge < valueZen)
         {
             Player.Instance.ConvertToMonk();
@@ -63,7 +69,21 @@ public class GameLogic : MonoBehaviour
     public void PlayMusicByCharge()
     {
         currentCharge = Bar.Instance.CurrentCharge;
-        //AudioManager.instance.playMusic() 
+        if (currentCharge < FuryPunk)
+        {
+            AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6);
+        }
+        else if (currentCharge > MonkZen)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK_ZEN);
+        }
+        else if (currentCharge > Monk)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK);
+        }
+        else
+        {
+            AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
+        }
     }
-
 }
