@@ -82,14 +82,14 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioId audioId)
     {
-        //if (currentMusicId != AudioId.LAST)
-        //{
-        //    SoundEffects[(int)currentMusicId].Stop();
-        //}
-        
-        //currentMusicId = audioId;
-        //currentMusic = SoundEffects[(int)currentMusicId];
-        //currentMusic.Play();
+        if (currentMusicId != AudioId.LAST)
+        {
+            SoundEffects[(int)currentMusicId].Stop();
+        }
+
+        currentMusicId = audioId;
+        currentMusic = SoundEffects[(int)currentMusicId];
+        currentMusic.Play();
     }
 
     public void PlaySFX(AudioId audioId)
@@ -99,9 +99,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(int soundToPlay)
     {
-        //SoundEffects[soundToPlay].Stop();
-        //SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
-        //SoundEffects[soundToPlay].Play();
+        SoundEffects[soundToPlay].Stop();
+        SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
+        SoundEffects[soundToPlay].Play();
     }
 
     //public void PlaySfxByAudioClip(AudioClip sfx)
