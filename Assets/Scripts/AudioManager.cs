@@ -63,6 +63,7 @@ public class AudioManager : MonoBehaviour
         soundEffects[soundToPlay].Play();
     }
 
+
     public void PlaySfxByAudioClip(AudioClip sfx)
     {
         //sfxAudioSource.PlayOneShot(sfx);

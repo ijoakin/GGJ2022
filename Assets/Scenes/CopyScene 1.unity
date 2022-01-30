@@ -1114,6 +1114,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5698179985296137156, guid: bd14341ac1c94cd4b8ba3b4fce600870, type: 3}
+      propertyPath: damagePoints
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7558608790608591825, guid: bd14341ac1c94cd4b8ba3b4fce600870, type: 3}
       propertyPath: m_Name
       value: Slime
@@ -1371,6 +1375,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f57c7d9e0639745a07e93eace1d85a, type: 3}
+--- !u!1 &2060690729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6004952763649376805, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
+  m_PrefabInstance: {fileID: 2064590531}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2060690730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060690729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4623253d92ae044b770b82618cd528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2064590531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1513,15 +1534,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 899.22766
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 513.7965
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.9554799
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_LocalRotation.w

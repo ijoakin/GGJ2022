@@ -39,7 +39,7 @@ public class Bar : MonoBehaviour
         Vector3 pos = Needle.transform.position;
 
         // 0.85 porque coso
-        pos.x = gameObject.transform.position.x + (CurrentCharge / 100.0f) * 0.85f;
+        pos.x = gameObject.transform.position.x + (CurrentCharge / 100.0f) * 1.95f;
         Needle.transform.position = pos;
     }
 }

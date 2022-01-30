@@ -29,7 +29,10 @@ public class Player : MonoBehaviour, IDamageTarget
     private float invicibleLenght = 2f;
     private float invicibleCounter;
 
+    private float chargeCount;
+    private float chargeLenght = 5f;
 
+    public PlayerState currentState;
 
     public enum PlayerMode
     {
@@ -37,8 +40,9 @@ public class Player : MonoBehaviour, IDamageTarget
         MONK = 1
     }
 
-    public enum PlayerStates
+    public enum PlayerState
     {
+        IDLE = -1,
         PUNK = 0,
         PUNK_PUNCH = 1,
         PUNK_JUMP = 2,
@@ -56,7 +60,6 @@ public class Player : MonoBehaviour, IDamageTarget
     private void Awake()
     {
         Instance = this;
-
     }
 
     // Start is called before the first frame update
@@ -70,11 +73,41 @@ public class Player : MonoBehaviour, IDamageTarget
         puncherCount = puncherTotal;
         invicibleCounter = 0;
         this.playerMode = PlayerMode.PUNK;
+
+        chargeCount = chargeLenght;
+    }
+
+    bool isIdle()
+    {
+        
+        if (animator.GetBool("Monk_Idle"))
+        {
+            return true;
+        }
+
+        if (!animator.GetBool("Walk") && !animator.GetBool("Punch") && !animator.GetBool("FireBall"))
+        {
+            return true;
+        }
+        return false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        rigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
+
+        isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
+
+        if ((chargeCount >= 0) && isIdle())
+        {
+            chargeCount -= Time.deltaTime;
+            if (chargeCount <= 0)
+            {
+                Charge(10);
+                chargeCount = chargeLenght;
+            }
+        }
 
         if (invicibleCounter >= 0)
         {
@@ -87,10 +120,6 @@ public class Player : MonoBehaviour, IDamageTarget
             return;
         }
 
-        rigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
-
-        isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
-
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             var audioId = Random.Range(15, 17);
@@ -101,12 +130,12 @@ public class Player : MonoBehaviour, IDamageTarget
         //Remove this. the enemy will call TakeDamage
         if (Input.GetKeyDown(KeyCode.E))
         {
-            TakeDamage(10);
+            Charge(100);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            TakeDamage(-10);
+            TakeDamage(100);
         }
 
         if (playerMode == PlayerMode.PUNK)
@@ -178,8 +207,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             animator.SetBool("Punch", true);
 
-            var audioId = Random.Range(10, 14);
-            AudioManager.instance.PlaySFX(audioId);
+            PlayerSounds.instance.PlayPunch();
         }
 
         if (animator.GetBool("Punch"))
@@ -223,7 +251,11 @@ public class Player : MonoBehaviour, IDamageTarget
     {
 
         fireBallCount = fireBallTotal;
+        
+        
         AudioManager.instance.PlaySFX((int) AudioId.MONJETRANS);
+
+
         //TODO: FireBall animation
         animator.SetBool("FireBall", true);
         animator.SetBool("ZenContinue", false);
@@ -258,8 +290,14 @@ public class Player : MonoBehaviour, IDamageTarget
         }
     }
 
+    public void Charge(int value)
+    {
+        GameLogic.Instance.Charge(value);
+    }
+
     public void TakeDamage(int damagePoints)
     {
+        damagePoints *= -1;
         //throw new System.NotImplementedException();
         var isFigthing = (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"));
 
@@ -274,7 +312,7 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if (this.rigidbody.velocity.x > 0)
+        if ((this.rigidbody.velocity.x > 0) && (this.playerMode == PlayerMode.MONK))
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);

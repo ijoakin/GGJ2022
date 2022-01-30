@@ -9,7 +9,7 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     [Range(-100, 100)]
     public int currentCharge = 0;
-    
+
     public int valueMonk = 50;
     public int valueZen = 75;
 
@@ -54,5 +54,11 @@ public class GameLogic : MonoBehaviour
             Player.Instance.ConvertToPunk();
         }
     }
-    
+
+    public void PlayMusicByCharge()
+    {
+        currentCharge = Bar.Instance.CurrentCharge;
+        //AudioManager.instance.playMusic() 
+    }
+
 }
