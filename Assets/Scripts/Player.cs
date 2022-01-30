@@ -125,7 +125,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             var audioId = Random.Range(15, 17);
-            AudioManager.instance.PlaySFX(audioId);
+            AudioManager.Instance.PlaySFX(audioId);
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
-                AudioManager.instance.PlaySFX((int)AudioId.MONJESALTA2);
+                AudioManager.Instance.PlaySFX((int)AudioId.MONJE_SALTA_2);
             }
         }
 
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             animator.SetBool("Punch", true);
 
-            PlayerSounds.instance.PlayPunch();
+            PlayerSounds.Instance.PlayPunch();
         }
 
         if (animator.GetBool("Punch"))
@@ -256,7 +256,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             fireBallCount = fireBallTotal;
 
-            AudioManager.instance.PlaySFX((int)AudioId.MONJETRANS);
+        AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
 
             //TODO: FireBall animation
             animator.SetBool("FireBall", true);
@@ -267,6 +267,7 @@ public class Player : MonoBehaviour, IDamageTarget
             IsConverting = true;
         }
         
+        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
@@ -321,6 +322,6 @@ public class Player : MonoBehaviour, IDamageTarget
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
-        AudioManager.instance.PlaySFX(10);
+        AudioManager.Instance.PlaySFX(10);
     }
 }
