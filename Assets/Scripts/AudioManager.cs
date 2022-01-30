@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource[] SoundEffects;
 
     private AudioSource currentMusic;
-    private AudioId currentMusicId;
+    private MusicId currentMusicId;
 
     //[SerializeField]
     //private AudioSource sfxAudioSource;
@@ -17,6 +17,10 @@ public class AudioManager : MonoBehaviour
 
     public enum AudioId
     {
+        PUNK_SALTO_1,
+        PUNK_SALTO_2,
+        PUNK_SALTO_3,
+
         MONJE_SALTA_1,
         MONJE_SALTA_2,
 
@@ -37,10 +41,16 @@ public class AudioManager : MonoBehaviour
         PUNK_PINA_4,
         PUNK_PINA_5,
 
-        PUNK_SALTO_1,
-        PUNK_SALTO_2,
-        PUNK_SALTO_3,
 
+
+        LAST
+    }
+
+    public enum MusicId
+    {
+        TRANS,
+        PUNK_DOWN_1,
+        PUNK_DOWN_2,
         LAST
     }
 
@@ -52,7 +62,7 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentMusicId = AudioId.LAST;
+        currentMusicId = MusicId.LAST;
     }
 
     // Update is called once per frame
@@ -76,19 +86,31 @@ public class AudioManager : MonoBehaviour
         PlaySFX(Random.Range(indexMin, indexMax));
     }
 
-    public void PlayMusicRandom()
+    public void PlayMusicRandom(MusicId audioMin, MusicId audioMax)
     {
+        int indexMin = (int)audioMin;
+        int indexMax = (int)audioMax;
+        if (indexMax <= indexMin)
+        {
+            Debug.Log($"PlayMusicRandom ERROR: indexMax <= indexMin ({indexMax}) ({indexMin})");
+            return;
+        }
+        PlayMusic(Random.Range(indexMin, indexMax));
     }
 
-    public void PlayMusic(AudioId audioId)
+    public void PlayMusic(MusicId musicId)
     {
-        if (currentMusicId != AudioId.LAST)
+        currentMusicId = musicId;
+        PlayMusic((int)musicId);
+    }
+
+    public void PlayMusic(int musicId)
+    {
+        if (currentMusicId != MusicId.LAST)
         {
-            SoundEffects[(int)currentMusicId].Stop();
+            MusicFiles[(int)currentMusicId].Stop();
         }
-        
-        currentMusicId = audioId;
-        currentMusic = SoundEffects[(int)currentMusicId];
+        currentMusic = MusicFiles[musicId];
         currentMusic.Play();
     }
 
