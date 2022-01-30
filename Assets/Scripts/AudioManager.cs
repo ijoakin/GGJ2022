@@ -4,11 +4,14 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
+    public bool DebugNextMusicId;
+
     public AudioSource[] MusicFiles;
     public AudioSource[] SoundEffects;
 
     private AudioSource currentMusic;
-    private MusicId currentMusicId;
+    private AudioSource nextMusic;
+    private MusicId nextMusicId;
 
     public enum AudioId
     {
@@ -65,6 +68,8 @@ public class AudioManager : MonoBehaviour
         PUNK_UP_5,
         PUNK_UP_6,
         TRANS,
+        MONK,
+        MONK_ZEN,
         LAST
     }
 
@@ -76,15 +81,24 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentMusicId = MusicId.LAST;
+        nextMusicId = MusicId.LAST;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (DebugNextMusicId)
+        {
+            Debug.Log(nextMusicId);
+        }
+
         if (currentMusic && !currentMusic.isPlaying)
         {
-            currentMusic.Play();
+            playNext();
+        }
+        else if (!currentMusic)
+        {
+            playNext();
         }
     }
 
@@ -114,18 +128,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(MusicId musicId)
     {
-        currentMusicId = musicId;
+        nextMusicId = musicId;
         PlayMusic((int)musicId);
     }
 
     public void PlayMusic(int musicId)
     {
-        if (currentMusicId != MusicId.LAST)
-        {
-            MusicFiles[(int)currentMusicId].Stop();
-        }
-        currentMusic = MusicFiles[musicId];
-        currentMusic.Play();
+        nextMusic = MusicFiles[musicId];
     }
 
     public void PlaySFX(AudioId audioId)
@@ -138,5 +147,14 @@ public class AudioManager : MonoBehaviour
         SoundEffects[soundToPlay].Stop();
         SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
         SoundEffects[soundToPlay].Play();
+    }
+
+    private void playNext()
+    {
+        currentMusic = nextMusic;
+        if (currentMusic)
+        {
+            currentMusic.Play();
+        }
     }
 }
