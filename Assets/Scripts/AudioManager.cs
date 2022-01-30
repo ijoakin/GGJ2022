@@ -16,7 +16,25 @@ public class AudioManager : MonoBehaviour
     public enum AudioId
     {
         MONJESALTA1 = 0,
-        MONJESALTA2 = 1
+        MONJESALTA2 = 1,
+        MONJETRANS = 2,
+        PUNKERRA1 = 3,
+        PUNKERRA2 = 4,
+        PUNKERRA3 = 5,
+        PUNKERRA4 = 6,
+        PUNKIRAAL80 = 7,
+        PUNKIRAAL80_2 = 8,
+        PUNKIRAAL80_3 = 9,
+
+        PUNKPINA1 = 10,
+        PUNKPINA2 = 11,
+        PUNKPINA3 = 12,
+        PUNKPINA4 = 13,
+        PUNKPINA5 = 14,
+
+        PUNKSALTO1 = 15,
+        PUNKSALTO2 = 16,
+        PUNKSALTO3 = 17,
     }
 
     private void Awake()

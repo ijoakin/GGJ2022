@@ -62,6 +62,8 @@ public class Player : MonoBehaviour, IDamageTarget
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            var audioId = Random.Range(15, 17);
+            AudioManager.instance.PlaySFX(audioId);
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
-                AudioManager.instance.PlaySFX((int)AudioId.MONJESALTA1);
+                AudioManager.instance.PlaySFX((int)AudioId.MONJESALTA2);
             }
         }
 
@@ -161,6 +163,9 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Punch"))
         {
             animator.SetBool("Punch", true);
+
+            var audioId = Random.Range(10, 14);
+            AudioManager.instance.PlaySFX(audioId);
         }
 
         if (animator.GetBool("Punch"))
@@ -204,7 +209,7 @@ public class Player : MonoBehaviour, IDamageTarget
     {
 
         fireBallCount = fireBallTotal;
-
+        AudioManager.instance.PlaySFX((int) AudioId.MONJETRANS);
         //TODO: FireBall animation
         animator.SetBool("FireBall", true);
         animator.SetBool("ZenContinue", false);
