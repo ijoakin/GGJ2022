@@ -10,30 +10,25 @@ public class AudioManager : MonoBehaviour
     private AudioSource currentMusic;
     private MusicId currentMusicId;
 
-    //[SerializeField]
-    //private AudioSource sfxAudioSource;
-    //public AudioSource BGMusic;
-    //public AudioSource levelEndMusic;
-
     public enum AudioId
     {
         PUNK_SALTO_1,
         PUNK_SALTO_2,
         PUNK_SALTO_3,
 
-        MONJE_SALTA_1,
-        MONJE_SALTA_2,
-
-        MONJE_TRANS,
+        PUNK_IRA_AL_80_1,
+        PUNK_IRA_AL_80_2,
+        PUNK_IRA_AL_80_3,
 
         PUNK_ERRA_1,
         PUNK_ERRA_2,
         PUNK_ERRA_3,
         PUNK_ERRA_4,
 
-        PUNK_IRA_AL_80_1,
-        PUNK_IRA_AL_80_2,
-        PUNK_IRA_AL_80_3,
+        MONJE_SALTA_1,
+        MONJE_SALTA_2,
+
+        MONJE_TRANS,
 
         PUNK_PINA_1,
         PUNK_PINA_2,
@@ -41,16 +36,35 @@ public class AudioManager : MonoBehaviour
         PUNK_PINA_4,
         PUNK_PINA_5,
 
+        ENEMIGO_MUERE_1,
+        ENEMIGO_MUERE_2,
+        ENEMIGO_MUERE_3,
 
+        ENEMIGO_SANGRE_1,
+        ENEMIGO_SANGRE_2,
+        ENEMIGO_SANGRE_3,
+        ENEMIGO_SANGRE_4,
+        ENEMIGO_SANGRE_5,
 
         LAST
     }
 
     public enum MusicId
     {
-        TRANS,
         PUNK_DOWN_1,
         PUNK_DOWN_2,
+        PUNK_DOWN_3,
+        PUNK_DOWN_4,
+        PUNK_DOWN_5,
+        PUNK_DOWN_6,
+        PUNK_DOWN_7,
+        PUNK_UP_1,
+        PUNK_UP_2,
+        PUNK_UP_3,
+        PUNK_UP_4,
+        PUNK_UP_5,
+        PUNK_UP_6,
+        TRANS,
         LAST
     }
 
@@ -125,9 +139,4 @@ public class AudioManager : MonoBehaviour
         SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
         SoundEffects[soundToPlay].Play();
     }
-
-    //public void PlaySfxByAudioClip(AudioClip sfx)
-    //{
-    //    sfxAudioSource.PlayOneShot(sfx);
-    //}
 }
