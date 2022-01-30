@@ -65,6 +65,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySfxByAudioClip(AudioClip sfx)
     {
-        sfxAudioSource.PlayOneShot(sfx);
+        //sfxAudioSource.PlayOneShot(sfx);
     }
 }

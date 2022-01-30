@@ -33,7 +33,7 @@ public class PunchController : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector2 force)
+    public void Punch(Vector2 force)
     {
         if (rigidbody2D == null)
         {

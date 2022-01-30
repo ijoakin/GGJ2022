@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 8388916209226613856}
   - component: {fileID: 8388916209226613863}
   - component: {fileID: 8388916209226613862}
-  - component: {fileID: 8388916209226613861}
   m_Layer: 0
   m_Name: Punch
   m_TagString: Untagged
@@ -183,17 +182,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8388916209226613861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8388916209226613860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 289b4934e788e7043bec105c9959aa0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyDelay: 0.2
-  destroySfx: {fileID: 0}

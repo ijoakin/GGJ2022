@@ -7,7 +7,7 @@ public class AutoDestroy : MonoBehaviour
 
     private void Awake()
     {
-        AudioManager.instance.PlaySfxByAudioClip(destroySfx);
+        //AudioManager.instance.PlaySfxByAudioClip(destroySfx);
         Destroy(this.gameObject, destroyDelay);
     }
 }
