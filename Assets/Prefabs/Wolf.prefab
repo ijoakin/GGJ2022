@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 5855191266807297553}
   - component: {fileID: 5855191266807297558}
   - component: {fileID: 5855191266807297559}
-  - component: {fileID: 5855191266807297557}
   - component: {fileID: 5855191266807297556}
   m_Layer: 7
   m_Name: Wolf
@@ -226,21 +225,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 461fcc51ed733c7418ea2ed206936943, type: 2}
   waitDuration: 2
---- !u!114 &5855191266807297557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5855191266807297565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0f1c84bdcb32a14d92e0a001483a493, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTags:
-  - Player
-  damagePoints: 1
 --- !u!114 &5855191266807297556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +254,7 @@ GameObject:
   - component: {fileID: 173353372807288798}
   - component: {fileID: 7204223348370878314}
   - component: {fileID: 4311747434266965026}
+  - component: {fileID: 8030294449562355620}
   m_Layer: 0
   m_Name: Damage
   m_TagString: Enemy
@@ -329,3 +314,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0.01590538, y: -0.2064418}
   m_Size: {x: 0.8640556, y: 1.117297}
   m_Direction: 0
+--- !u!114 &8030294449562355620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8787998041232286427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f1c84bdcb32a14d92e0a001483a493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTags:
+  - Player
+  damagePoints: 1
