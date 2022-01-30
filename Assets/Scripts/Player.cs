@@ -76,7 +76,11 @@ public class Player : MonoBehaviour, IDamageTarget
             return true;
         }
 
-        if (!animator.GetBool("Walk") && !animator.GetBool("Punch") && !animator.GetBool("FireBall"))
+        if (!animator.GetBool("Walk") && !animator.GetBool("Punch") && !animator.GetBool("Monk_Kick")
+            && !animator.GetBool("Monk_Walk")
+            && !animator.GetBool("Zen")
+            && !animator.GetBool("ZenContinue")
+            && !animator.GetBool("FireBall"))
         {
             return true;
         }
@@ -127,7 +131,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            TakeDamage(100);
+            TakeDamage(10);
         }
 
         if (playerMode == PlayerMode.PUNK)
@@ -137,7 +141,7 @@ public class Player : MonoBehaviour, IDamageTarget
     }
     public void Punch()
     {
-        Debug.Log("Se creo cubo");
+        Charge(-5);
         float offsetX = 1;
         if (playerMode == PlayerMode.PUNK)
         {
