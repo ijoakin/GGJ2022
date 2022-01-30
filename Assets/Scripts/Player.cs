@@ -76,14 +76,11 @@ public class Player : MonoBehaviour, IDamageTarget
             return true;
         }
 
-        if (!animator.GetBool("Walk") && !animator.GetBool("Punch") && !animator.GetBool("Monk_Kick")
-            && !animator.GetBool("Monk_Walk")
-            && !animator.GetBool("Zen")
-            && !animator.GetBool("ZenContinue")
-            && !animator.GetBool("FireBall"))
+        if ((playerMode == PlayerMode.PUNK) && (!animator.GetBool("Walk") && !animator.GetBool("Punch")))
         {
             return true;
         }
+
         return false;
     }
 

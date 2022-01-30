@@ -10,8 +10,12 @@ public class GameLogic : MonoBehaviour
     [Range(-100, 100)]
     public int currentCharge = 0;
 
-    public int valueMonk = 50;
-    public int valueZen = 75;
+    public int valueMonk = 41;
+    public int valueZen = 91;
+
+    public int FuryPunk = -40;
+    public int Monk = 41;
+    public int MonkZen = 91;
 
     private void Awake()
     {
@@ -21,7 +25,6 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AudioManager.Instance.PlayMusic(AudioManager.AudioId.PUNK_IRA_AL_80_1);
     }
 
     // Update is called once per frame
@@ -37,8 +40,8 @@ public class GameLogic : MonoBehaviour
         //currentCharge = Bar.Instance.CurrentCharge;
         Bar.Instance.Charge(value);
         CheckCharge();
-
     }
+
     public void CheckCharge()
     {
         currentCharge = Bar.Instance.CurrentCharge;
