@@ -7,7 +7,6 @@ public class BackgroundLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -18,7 +17,6 @@ public class BackgroundLogic : MonoBehaviour
         SpriteRenderer sr = redBg.GetComponent<SpriteRenderer>();
         newColor = new Color(sr.color.r, sr.color.g, sr.color.b, newAlpha);
         sr.color = newColor;
-               
     }
 
     float ChargeToAlpha(float charge)

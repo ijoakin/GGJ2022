@@ -1116,7 +1116,7 @@ GameObject:
   - component: {fileID: 8372375988247490637}
   - component: {fileID: 8372375988247490626}
   m_Layer: 0
-  m_Name: Punk_ira_al80
+  m_Name: Punk_ira_al80_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2559,7 +2559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2432a7b80ac69bf47bd947d909cde273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundEffects:
+  SoundEffects:
   - {fileID: 8372375987551679246}
   - {fileID: 8372375988217624119}
   - {fileID: 8372375988557692293}
@@ -2578,6 +2578,3 @@ MonoBehaviour:
   - {fileID: 8372375988538255570}
   - {fileID: 8372375988752825831}
   - {fileID: 8372375987628198940}
-  sfxAudioSource: {fileID: 0}
-  BGMusic: {fileID: 0}
-  levelEndMusic: {fileID: 0}

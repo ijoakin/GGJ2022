@@ -21,12 +21,14 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AudioManager.Instance.PlayMusic(AudioManager.AudioId.PUNK_IRA_AL_80_1);
     }
 
     // Update is called once per frame
     void Update()
     {
     }
+
     public void Charge(int value)
     {
         //TODO: call the bar to charge and get the currentValue

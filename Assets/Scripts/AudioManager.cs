@@ -4,7 +4,10 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public AudioSource[] soundEffects;
+    public AudioSource[] SoundEffects;
+
+    private AudioSource currentMusic;
+    private AudioId currentMusicId;
 
     //[SerializeField]
     //private AudioSource sfxAudioSource;
@@ -36,6 +39,8 @@ public class AudioManager : MonoBehaviour
         PUNK_SALTO_1,
         PUNK_SALTO_2,
         PUNK_SALTO_3,
+
+        LAST
     }
 
     private void Awake()
@@ -46,11 +51,16 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentMusicId = AudioId.LAST;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (currentMusic && !currentMusic.isPlaying)
+        {
+            currentMusic.Play();
+        }
     }
 
     public void PlayRandom(AudioId audioMin, AudioId audioMax)
@@ -65,16 +75,32 @@ public class AudioManager : MonoBehaviour
         PlaySFX(Random.Range(indexMin, indexMax));
     }
 
-    public void PlaySFX(AudioId soundToPlay)
+    public void PlayMusicRandom()
     {
-        PlaySFX((int)soundToPlay);
+    }
+
+    public void PlayMusic(AudioId audioId)
+    {
+        if (currentMusicId != AudioId.LAST)
+        {
+            SoundEffects[(int)currentMusicId].Stop();
+        }
+        
+        currentMusicId = audioId;
+        currentMusic = SoundEffects[(int)currentMusicId];
+        currentMusic.Play();
+    }
+
+    public void PlaySFX(AudioId audioId)
+    {
+        PlaySFX((int)audioId);
     }
 
     public void PlaySFX(int soundToPlay)
     {
-        soundEffects[soundToPlay].Stop();
-        soundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
-        soundEffects[soundToPlay].Play();
+        SoundEffects[soundToPlay].Stop();
+        SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
+        SoundEffects[soundToPlay].Play();
     }
 
     //public void PlaySfxByAudioClip(AudioClip sfx)
