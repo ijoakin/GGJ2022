@@ -18,15 +18,15 @@ public class DamageController : MonoBehaviour
         this.damageReporter = damageReporter;
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    ApplyDamage(collision.gameObject);
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        ApplyDamage(collision.gameObject);
+    }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    ApplyDamage(collision.gameObject);
-    //}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        ApplyDamage(collision.gameObject);
+    }
 
     public void ApplyDamage(GameObject gameObject, int damagePoint)
     {
@@ -36,6 +36,21 @@ public class DamageController : MonoBehaviour
             if (component != null)
             {
                 component.TakeDamage(damagePoint);
+                if (this.damageReporter != null)
+                {
+                    this.damageReporter.OnApplyDamage();
+                }
+            }
+        }
+    }
+    public void ApplyDamage(GameObject gameObject)
+    {
+        if (targetTags.Contains(gameObject.tag))
+        {
+            var component = gameObject.GetComponent<IDamageTarget>();
+            if (component != null)
+            {
+                component.TakeDamage(damagePoints);
                 if (this.damageReporter != null)
                 {
                     this.damageReporter.OnApplyDamage();

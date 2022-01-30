@@ -156,6 +156,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   currentState: 0
+  damagePoints: 0
+  punchController: {fileID: 8388916209226613856, guid: cbe2ec39ab26a4a489a18446b5ed8358, type: 3}
+  punchPrefab: {fileID: 8388916209226613860, guid: cbe2ec39ab26a4a489a18446b5ed8358, type: 3}
 --- !u!95 &6004952763649376803
 Animator:
   serializedVersion: 4

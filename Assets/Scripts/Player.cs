@@ -32,6 +32,10 @@ public class Player : MonoBehaviour, IDamageTarget
     private float chargeLenght = 2.5f;
 
     public PlayerState currentState;
+     
+    [Header("Attack")]
+    [SerializeField] private PunchController punchController;
+    [SerializeField] private GameObject punchPrefab;
 
     [SerializeField]
     private int damagePoints;
@@ -148,12 +152,36 @@ public class Player : MonoBehaviour, IDamageTarget
         else
             UpdateMonk();
     }
+    public void Punch()
+    {
+        Debug.Log("Se creo cubo");
+        float offsetX = 1;
+        if (playerMode == PlayerMode.PUNK)
+        {
+            if (!spriteRenderer.flipX)
+            {
+                offsetX = offsetX  * -1;
+            }
+        }
+        else
+        {
+            if (spriteRenderer.flipX)
+            {
+                offsetX = offsetX * -1;
+            }
+        }
+
+        var punch = Instantiate(this.punchPrefab, new Vector2(this.transform.position.x + offsetX, this.transform.position.y) , this.transform.rotation);
+        punch.GetComponent<PunchController>().Punch();
+    }
+
     private void UpdateMonk()
     {
 
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
         {
             animator.SetBool("Monk_Kick", true);
+            Punch();
         }
 
         if (animator.GetBool("Monk_Kick"))
@@ -213,7 +241,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Punch"))
         {
             animator.SetBool("Punch", true);
-
+            Punch();
             PlayerSounds.Instance.PlayPunch();
         }
 

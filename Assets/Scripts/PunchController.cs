@@ -46,4 +46,13 @@ public class PunchController : MonoBehaviour
 
         Destroy(this.gameObject, autoDestroyDelay);
     }
+    public void Punch()
+    {
+        if (rigidbody2D == null)
+        {
+            rigidbody2D = this.GetComponent<Rigidbody2D>();
+        }
+
+        Destroy(this.gameObject, autoDestroyDelay);
+    }
 }
