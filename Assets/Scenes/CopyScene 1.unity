@@ -1477,12 +1477,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8372375987672902174, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987672902174, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8372375987936976077, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372375987949626776, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
+      propertyPath: m_Volume
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8372375987949626776, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_PlayOnAwake

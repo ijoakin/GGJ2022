@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AudioManager;
 
 public class Player : MonoBehaviour, IDamageTarget
 {
@@ -31,12 +32,7 @@ public class Player : MonoBehaviour, IDamageTarget
     private float chargeCount;
     private float chargeLenght = 2.5f;
 
-    [Header("Attack")]
-    [SerializeField] private PunchController punchController;
-    [SerializeField] private GameObject punchPrefab;
-
-    [SerializeField]
-    private int damagePoints;
+    public PlayerState currentState;
 
     private bool IsConverting = false;
 
@@ -44,6 +40,21 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         PUNK = 0,
         MONK = 1
+    }
+
+    public enum PlayerState
+    {
+        IDLE = -1,
+        PUNK = 0,
+        PUNK_PUNCH = 1,
+        PUNK_JUMP = 2,
+        PUNK_WALK = 3,
+        FIREBALL = 4,
+        MONK = 5,
+        MONK_WALK = 6,
+        MONK_KICK = 7,
+        MONK_ZEND = 8,
+        MONK_ZEND_CONTINUE = 9
     }
 
     private PlayerMode playerMode;
@@ -114,8 +125,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             var audioId = Random.Range(15, 17);
-            PlayerSounds.Instance.PlayJumpPunk();
-
+            AudioManager.Instance.PlaySFX(audioId);
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
@@ -135,36 +145,12 @@ public class Player : MonoBehaviour, IDamageTarget
         else
             UpdateMonk();
     }
-    public void Punch()
-    {
-        Debug.Log("Se creo cubo");
-        float offsetX = 1;
-        if (playerMode == PlayerMode.PUNK)
-        {
-            if (!spriteRenderer.flipX)
-            {
-                offsetX = offsetX  * -1;
-            }
-        }
-        else
-        {
-            if (spriteRenderer.flipX)
-            {
-                offsetX = offsetX * -1;
-            }
-        }
-
-        var punch = Instantiate(this.punchPrefab, new Vector2(this.transform.position.x + offsetX, this.transform.position.y) , this.transform.rotation);
-        punch.GetComponent<PunchController>().Punch();
-    }
-
     private void UpdateMonk()
     {
 
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
         {
             animator.SetBool("Monk_Kick", true);
-            Punch();
         }
 
         if (animator.GetBool("Monk_Kick"))
@@ -174,8 +160,7 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 puncherCount = puncherTotal;
                 animator.SetBool("Monk_Kick", false);
-                
-                PlayerSounds.Instance.PlayJumpMonk();
+                AudioManager.Instance.PlaySFX((int)AudioId.MONJE_SALTA_2);
             }
         }
 
@@ -224,7 +209,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Punch"))
         {
             animator.SetBool("Punch", true);
-            Punch();
+
             PlayerSounds.Instance.PlayPunch();
         }
 
@@ -259,15 +244,10 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void ConvertToZen()
     {
-        if (!animator.GetBool("ZenContinue"))
-        {
-            zenCount = zenTotal;
+        zenCount = zenTotal;
 
-            //TODO: FireBall animation
-            animator.SetBool("Zen", true);
-            PlayerSounds.Instance.PlayTransformationZen();
-        }
-        
+        //TODO: FireBall animation
+        animator.SetBool("Zen", true);
     }
 
     public void ConvertToMonk()
@@ -276,7 +256,15 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             fireBallCount = fireBallTotal;
 
-            PlayerSounds.Instance.PlayTransformation();
+<<<<<<< HEAD
+            AudioManager.instance.PlaySFX((int)AudioId.MONJETRANS);
+=======
+        fireBallCount = fireBallTotal;
+        
+        
+        AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
+
+>>>>>>> 20cf3b7dcd4e4a7f311f5ff299d6e2ff24ad0d64
 
             //TODO: FireBall animation
             animator.SetBool("FireBall", true);
@@ -287,7 +275,6 @@ public class Player : MonoBehaviour, IDamageTarget
             IsConverting = true;
         }
         
-        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
@@ -310,8 +297,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
                 if (component != null)
                 {
-                    //take damage!!!
-                    component.ApplyDamage(gameObject, 3);
+                    
                 }
             }
         }
@@ -339,13 +325,10 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if (this.rigidbody.velocity.x > 0)
+        if ((this.rigidbody.velocity.x > 0) && (this.playerMode == PlayerMode.MONK))
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
-
-        //rigidbody.AddForce(new Vector2(100f, 5f));
-
-        PlayerSounds.Instance.PlayPunch();
+        AudioManager.Instance.PlaySFX(10);
     }
 }

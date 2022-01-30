@@ -28,7 +28,22 @@ public class DamageController : MonoBehaviour
         ApplyDamage(collision.gameObject);
     }
 
-    private void ApplyDamage(GameObject gameObject)
+    public void ApplyDamage(GameObject gameObject, int damagePoint)
+    {
+        if (targetTags.Contains(gameObject.tag))
+        {
+            var component = gameObject.GetComponent<IDamageTarget>();
+            if (component != null)
+            {
+                component.TakeDamage(damagePoint);
+                if (this.damageReporter != null)
+                {
+                    this.damageReporter.OnApplyDamage();
+                }
+            }
+        }
+    }
+    public void ApplyDamage(GameObject gameObject)
     {
         if (targetTags.Contains(gameObject.tag))
         {

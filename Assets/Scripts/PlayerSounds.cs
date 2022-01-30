@@ -41,4 +41,9 @@ public class PlayerSounds : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_TRANS);
     }
+
+    public void PlayTransformationZen()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_TRANS);
+    }
 }
