@@ -1,4 +1,4 @@
-public class SlimeEnemyController : EnemyGameObject
+public class WolfEnemyController : EnemyGameObject
 {
     public int Life { get; set; }
 
