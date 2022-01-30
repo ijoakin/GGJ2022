@@ -34,9 +34,6 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public PlayerState currentState;
 
-    [SerializeField]
-    private int damagePoints;
-
     private bool IsConverting = false;
 
     public enum PlayerMode
@@ -259,7 +256,15 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             fireBallCount = fireBallTotal;
 
-            AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
+<<<<<<< HEAD
+            AudioManager.instance.PlaySFX((int)AudioId.MONJETRANS);
+=======
+        fireBallCount = fireBallTotal;
+        
+        
+        AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
+
+>>>>>>> 20cf3b7dcd4e4a7f311f5ff299d6e2ff24ad0d64
 
             //TODO: FireBall animation
             animator.SetBool("FireBall", true);
@@ -270,7 +275,6 @@ public class Player : MonoBehaviour, IDamageTarget
             IsConverting = true;
         }
         
-        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
@@ -293,22 +297,8 @@ public class Player : MonoBehaviour, IDamageTarget
 
                 if (component != null)
                 {
-                    //take damage!!!
-                    component.ApplyDamage(gameObject, 3);
+                    
                 }
-            }
-        }
-    }
-
-    private void ApplyDamage(GameObject gameObject)
-    {
-        if (gameObject.tag == "Enemy")
-        {
-            var component = gameObject.GetComponent<IDamageTarget>();
-            if (component != null)
-            {
-                component.TakeDamage(damagePoints);
-                Destroy(this.gameObject);
             }
         }
     }
