@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5855191265795845401}
   m_Layer: 7
   m_Name: SpriteHolder
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -270,9 +270,9 @@ GameObject:
   - component: {fileID: 173353372807288798}
   - component: {fileID: 7204223348370878314}
   - component: {fileID: 4311747434266965026}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Damage
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
