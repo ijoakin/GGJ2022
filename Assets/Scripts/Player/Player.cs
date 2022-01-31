@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
-using static AudioManager;
 
 public class Player : MonoBehaviour, IDamageTarget
 {
@@ -18,6 +18,11 @@ public class Player : MonoBehaviour, IDamageTarget
     private SpriteRenderer spriteRenderer;
     private float puncherCount;
     private float puncherTotal = 0.5f;
+
+    private float kickCount;
+    private float kickTotal = 0.5f;
+
+
     private BoxCollider2D boxCollider;
 
     private float fireBallCount;
@@ -30,9 +35,34 @@ public class Player : MonoBehaviour, IDamageTarget
     private float invicibleCounter;
 
     private float chargeCount;
-    private float chargeLenght = 2.5f;
+    private float chargeLenght = 2.3f;
 
-    public PlayerState currentState;
+    private AnimatorClipInfo[] animatorinfo;
+    private string current_animation;
+    private PlayerState currentState;
+
+    [Header("Animation")]
+    [SerializeField] private AnimatorController animatorController;
+
+    public enum PlayerState
+    {
+        Player_Idle,
+        Player_Punch,
+        Player_Walk,
+        Player_Fireball,
+        Player_Monk_Idle,
+        Player_Monk_Run,
+        Player_Monk_Kick,
+        Player_Monk_Zen,
+        Player_Monk_Zen_Continue
+    }
+
+    [Header("Attack")]
+    [SerializeField] private PunchController punchController;
+    [SerializeField] private GameObject punchPrefab;
+
+    [SerializeField]
+    private int damagePoints;
 
     private bool IsConverting = false;
 
@@ -40,21 +70,6 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         PUNK = 0,
         MONK = 1
-    }
-
-    public enum PlayerState
-    {
-        IDLE = -1,
-        PUNK = 0,
-        PUNK_PUNCH = 1,
-        PUNK_JUMP = 2,
-        PUNK_WALK = 3,
-        FIREBALL = 4,
-        MONK = 5,
-        MONK_WALK = 6,
-        MONK_KICK = 7,
-        MONK_ZEND = 8,
-        MONK_ZEND_CONTINUE = 9
     }
 
     private PlayerMode playerMode;
@@ -73,34 +88,64 @@ public class Player : MonoBehaviour, IDamageTarget
         boxCollider = GetComponent<BoxCollider2D>();
 
         puncherCount = puncherTotal;
+        kickCount = kickTotal;
         invicibleCounter = 0;
         this.playerMode = PlayerMode.PUNK;
 
         chargeCount = chargeLenght;
+
+        currentState = PlayerState.Player_Idle;
+    }
+    public void PlayAnimation()
+    {
+        PlayAnimation(currentState);
+    }
+    public void PlayAnimation(PlayerState stateId)
+    {
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        animator.Play(stateId.ToString());
+    }
+    
+
+    public void PlayAnimation(AnimationClip animationClip)
+    {
+        animator.Play(animationClip.name.ToString());
     }
 
     bool isIdle()
     {
-        
-        if (animator.GetBool("Monk_Idle"))
+        //Debug.Log($"{animator.GetBool("Monk_Idle")}");
+
+        if (current_animation == "Player_Monk_Idle")
         {
             return true;
         }
 
-        if (!animator.GetBool("Walk") && !animator.GetBool("Punch") && !animator.GetBool("FireBall"))
+        if ((playerMode == PlayerMode.PUNK) && (!animator.GetBool("Walk") && !animator.GetBool("Punch")))
         {
             return true;
         }
+
         return false;
     }
 
+    
+    
     // Update is called once per frame
     void Update()
     {
+
+        animatorinfo = this.animator.GetCurrentAnimatorClipInfo(0);
+        current_animation = animatorinfo[0].clip.name;
+
         rigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
 
         isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
-
+        //Debug.Log($"{chargeCount}: {isIdle()}");
+        
         if ((chargeCount >= 0) && isIdle())
         {
             chargeCount -= Time.deltaTime;
@@ -125,7 +170,8 @@ public class Player : MonoBehaviour, IDamageTarget
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             var audioId = Random.Range(15, 17);
-            AudioManager.Instance.PlaySFX(audioId);
+            PlayerSounds.Instance.PlayJumpPunk();
+
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
 
@@ -137,7 +183,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            TakeDamage(100);
+            TakeDamage(10);
         }
 
         if (playerMode == PlayerMode.PUNK)
@@ -145,22 +191,47 @@ public class Player : MonoBehaviour, IDamageTarget
         else
             UpdateMonk();
     }
+    public void Punch()
+    {
+        Charge(-5);
+        float offsetX = 1;
+        if (playerMode == PlayerMode.PUNK)
+        {
+            if (!spriteRenderer.flipX)
+            {
+                offsetX = offsetX  * -1;
+            }
+        }
+        else
+        {
+            if (spriteRenderer.flipX)
+            {
+                offsetX = offsetX * -1;
+            }
+        }
+
+        var punch = Instantiate(this.punchPrefab, new Vector2(this.transform.position.x + offsetX, this.transform.position.y) , this.transform.rotation);
+        punch.GetComponent<PunchController>().Punch();
+    }
+
     private void UpdateMonk()
     {
 
         if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
         {
             animator.SetBool("Monk_Kick", true);
+            PlayerSounds.Instance.PlayJumpMonk();
+            Punch();
         }
 
         if (animator.GetBool("Monk_Kick"))
         {
-            puncherCount -= Time.deltaTime;
-            if (puncherCount <= 0)
+            kickCount -= Time.deltaTime;
+
+            if (kickCount <= 0)
             {
-                puncherCount = puncherTotal;
+                kickCount = kickTotal;
                 animator.SetBool("Monk_Kick", false);
-                AudioManager.Instance.PlaySFX((int)AudioId.MONJE_SALTA_2);
             }
         }
 
@@ -206,20 +277,23 @@ public class Player : MonoBehaviour, IDamageTarget
 
     private void UpdatePunk()
     {
-        if (Input.GetButtonDown("Fire1") && !animator.GetBool("Punch"))
+        if (Input.GetButtonDown("Fire1") && currentState != PlayerState.Player_Punch)
         {
-            animator.SetBool("Punch", true);
+            currentState = PlayerState.Player_Punch;
+            PlayAnimation();
 
+            Punch();
             PlayerSounds.Instance.PlayPunch();
         }
 
-        if (animator.GetBool("Punch"))
+        if (currentState == PlayerState.Player_Punch)
         {
             puncherCount -= Time.deltaTime;
             if (puncherCount <= 0)
             {
                 puncherCount = puncherTotal;
-                animator.SetBool("Punch", false);
+                currentState = PlayerState.Player_Idle;
+                PlayAnimation();
             }
         }
 
@@ -244,10 +318,15 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void ConvertToZen()
     {
-        zenCount = zenTotal;
+        if (!animator.GetBool("ZenContinue"))
+        {
+            zenCount = zenTotal;
 
-        //TODO: FireBall animation
-        animator.SetBool("Zen", true);
+            //TODO: FireBall animation
+            animator.SetBool("Zen", true);
+            PlayerSounds.Instance.PlayTransformationZen();
+        }
+        
     }
 
     public void ConvertToMonk()
@@ -256,15 +335,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             fireBallCount = fireBallTotal;
 
-<<<<<<< HEAD
-            AudioManager.instance.PlaySFX((int)AudioId.MONJETRANS);
-=======
-        fireBallCount = fireBallTotal;
-        
-        
-        AudioManager.Instance.PlaySFX((int) AudioId.MONJE_TRANS);
-
->>>>>>> 20cf3b7dcd4e4a7f311f5ff299d6e2ff24ad0d64
+            PlayerSounds.Instance.PlayTransformation();
 
             //TODO: FireBall animation
             animator.SetBool("FireBall", true);
@@ -275,6 +346,7 @@ public class Player : MonoBehaviour, IDamageTarget
             IsConverting = true;
         }
         
+        boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
@@ -287,21 +359,6 @@ public class Player : MonoBehaviour, IDamageTarget
         boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
     }
    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
-        {
-            if (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"))
-            {
-                var component = collision.gameObject.GetComponent<DamageController>();
-
-                if (component != null)
-                {
-                    
-                }
-            }
-        }
-    }
 
     public void Charge(int value)
     {
@@ -310,7 +367,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void TakeDamage(int damagePoints)
     {
-        damagePoints *= -1;
+        damagePoints = -5;
         //throw new System.NotImplementedException();
         var isFigthing = (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"));
 
@@ -325,10 +382,11 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if ((this.rigidbody.velocity.x > 0) && (this.playerMode == PlayerMode.MONK))
+        if (this.rigidbody.velocity.x > 0)
             xbounceForce *= -1f;
 
         rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
-        AudioManager.Instance.PlaySFX(10);
+
+        PlayerSounds.Instance.PlayPunch();
     }
 }
