@@ -77,14 +77,15 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.ZEN;
                 Player.Instance.ConvertToZen();
-                //AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK_ZEN, true);
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
             }
         }
         else if (CurrentCharge <= THRESHOLD_FURY)
         {
             if (ChargeState != ChargeStates.FURY)
             {
-                //AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, true);
+                ChargeState = ChargeStates.FURY;
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6);
             }
         }
         else if (CurrentCharge >= THRESHOLD_MONK && CurrentCharge < THRESHOLD_ZEN)
@@ -93,7 +94,7 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.MONK;
                 Player.Instance.ConvertToMonk();
-                //AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK, true);
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK);
             }
         }
         else if (CurrentCharge < THRESHOLD_MONK)
@@ -109,7 +110,6 @@ public class GameLogic : MonoBehaviour
 
     private void playMusicPunk()
     {
-        //AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7, true);
-       AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_3);
+        AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
     }
 }
