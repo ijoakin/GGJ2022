@@ -20,6 +20,7 @@ public class History : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
     }
 
     // Start is called before the first frame update
@@ -77,6 +78,11 @@ public class History : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Next()
