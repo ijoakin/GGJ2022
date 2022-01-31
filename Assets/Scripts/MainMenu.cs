@@ -7,4 +7,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("FinalLevel");
     }
+
+    public void CreditsButton()
+    {
+        SceneManager.LoadScene("Credits");
+    }
 }
