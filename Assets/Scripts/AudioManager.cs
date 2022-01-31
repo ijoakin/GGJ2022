@@ -1,17 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public bool DebugNextMusicId;
-
     public AudioSource[] MusicFiles;
     public AudioSource[] SoundEffects;
 
-    private AudioSource currentMusic;
-    private AudioSource nextMusic;
-    private MusicId nextMusicId;
+    private MusicPlayerController musicPlayerController;
+
+    private int randomMin;
+    private int randomMax;
 
     public enum AudioId
     {
@@ -62,12 +62,14 @@ public class AudioManager : MonoBehaviour
         PUNK_DOWN_5,
         PUNK_DOWN_6,
         PUNK_DOWN_7,
+
         PUNK_UP_1,
         PUNK_UP_2,
         PUNK_UP_3,
         PUNK_UP_4,
         PUNK_UP_5,
         PUNK_UP_6,
+
         TRANS,
         MONK,
         MONK_ZEN,
@@ -77,65 +79,39 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        musicPlayerController = new MusicPlayerController(this);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        nextMusicId = MusicId.LAST;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (DebugNextMusicId)
-        {
-            Debug.Log(nextMusicId);
-        }
-
-        if (currentMusic && !currentMusic.isPlaying)
-        {
-            playNext();
-        }
-        else if (!currentMusic)
-        {
-            playNext();
-        }
+        musicPlayerController.Update();
     }
 
-    public void PlayRandom(AudioId audioMin, AudioId audioMax)
+    public void PlayMusic(MusicId _musicId)
     {
-        int indexMin = (int)audioMin;
-        int indexMax = (int)audioMax;
-        if (indexMax <= indexMin)
-        {
-            Debug.Log($"PlayRandom ERROR: indexMax <= indexMin ({indexMax}) ({indexMin})");
-            return;
-        }
-        PlaySFX(Random.Range(indexMin, indexMax));
+        musicPlayerController.PlayMusic(_musicId);
     }
 
-    public void PlayMusicRandom(MusicId audioMin, MusicId audioMax)
+    public void PlayMusicLoop(MusicId _musicId)
     {
-        int indexMin = (int)audioMin;
-        int indexMax = (int)audioMax;
-        if (indexMax <= indexMin)
-        {
-            Debug.Log($"PlayMusicRandom ERROR: indexMax <= indexMin ({indexMax}) ({indexMin})");
-            return;
-        }
-        PlayMusic(Random.Range(indexMin, indexMax));
+        musicPlayerController.PlayMusicLoop(_musicId);
     }
 
-    public void PlayMusic(MusicId musicId)
+    public void PlayMusicNext()
     {
-        nextMusicId = musicId;
-        PlayMusic((int)musicId);
+        musicPlayerController.PlayMusicNext();
     }
 
-    public void PlayMusic(int musicId)
+    public void PlayMusicRandomLoop(AudioManager.MusicId _randomMin, AudioManager.MusicId _randomMax)
     {
-        nextMusic = MusicFiles[musicId];
+        musicPlayerController.PlayMusicRandomLoop((int)_randomMin, (int)_randomMax);
     }
 
     public void PlaySFX(AudioId audioId)
@@ -150,12 +126,203 @@ public class AudioManager : MonoBehaviour
         SoundEffects[soundToPlay].Play();
     }
 
-    private void playNext()
+    public void PlaySFXRandom(AudioId audioMin, AudioId audioMax)
     {
-        currentMusic = nextMusic;
-        if (currentMusic)
+        randomMin = (int)audioMin;
+        randomMax = (int)audioMax;
+        if (randomMax <= randomMin)
         {
+            Debug.Log($"PlaySFXRandom ERROR: audioMax <= audioMin ({randomMax}) ({randomMin})");
+            return;
+        }
+        PlaySFX(Random.Range(randomMin, randomMax + 1));
+    }
+}
+
+public class MusicPlayerController
+{
+    private AudioManager audioManager;
+    private MusicPlayer currentPlayer;
+    private List<MusicPlayer> musicPlayers;
+    private enum PlayerTypes
+    {
+        SIMPLE,
+        LOOP,
+        RANDOM_LOOP
+    }
+
+    public MusicPlayerController(AudioManager _audioManager)
+    {
+        audioManager = _audioManager;
+        musicPlayers = new List<MusicPlayer>();
+        musicPlayers.Add(new SimpleMusicPlayer(audioManager));
+        musicPlayers.Add(new LoopMusicPlayer(audioManager));
+        musicPlayers.Add(new RandomLoopMusicPlayer(audioManager));
+        currentPlayer = musicPlayers[0];
+    }
+
+    public void PlayMusic(AudioManager.MusicId _musicId)
+    {
+        currentPlayer.Stop();
+        currentPlayer = musicPlayers[(int)PlayerTypes.SIMPLE];
+        currentPlayer.Play(_musicId);
+    }
+
+    public void PlayMusicLoop(AudioManager.MusicId _musicId)
+    {
+        currentPlayer.Stop();
+        currentPlayer = musicPlayers[(int)PlayerTypes.LOOP];
+        currentPlayer.Play(_musicId);
+    }
+
+    public void PlayMusicNext()
+    {
+        currentPlayer.Stop();
+        currentPlayer.Next();
+    }
+
+    public void PlayMusicRandomLoop(int _randomMin, int _randomMax)
+    {
+        currentPlayer.Stop();
+        currentPlayer = musicPlayers[(int)PlayerTypes.RANDOM_LOOP];
+        currentPlayer.Play(_randomMin, _randomMax);
+    }
+
+    public void Update()
+    {
+        currentPlayer.Update();
+    }
+}
+
+public abstract class MusicPlayer
+{
+    protected AudioManager audioManager;
+    protected AudioSource currentMusic;
+
+    public MusicPlayer(AudioManager _audioManager)
+    {
+        audioManager = _audioManager;
+    }
+
+    public virtual void Next()
+    {
+    }
+
+    public virtual void Play(AudioManager.MusicId _musicId)
+    {
+    }
+
+    public virtual void Play(int _randomMin, int _randomMax)
+    {
+    }
+
+    public void Stop()
+    {
+        if (!currentMusic)
+        {
+            return;
+        }
+        currentMusic.Stop();
+    }
+
+    public virtual void Update()
+    {
+    }
+}
+
+public class SimpleMusicPlayer : MusicPlayer
+{
+    public SimpleMusicPlayer(AudioManager _audioManager)
+        : base(_audioManager)
+    {
+    }
+
+    override public void Play(AudioManager.MusicId _musicId)
+    {
+        //Debug.Log($"SimpleMusicPlayer Play {_musicId}");
+        audioManager.MusicFiles[(int)_musicId].Play();
+    }
+}
+
+public class LoopMusicPlayer : MusicPlayer
+{
+    public LoopMusicPlayer(AudioManager _audioManager)
+        : base(_audioManager)
+    {
+    }
+
+    override public void Next()
+    {
+        currentMusic.Play();
+    }
+
+    override public void Play(AudioManager.MusicId _musicId)
+    {
+        //Debug.Log($"LoopMusicPlayer Play {_musicId}");
+        currentMusic = audioManager.MusicFiles[(int)_musicId];
+        currentMusic.Play();
+    }
+
+    override public void Update()
+    {
+        if (currentMusic && !currentMusic.isPlaying)
+        {
+            //Debug.Log($"LoopMusicPlayer PlayLoop");
             currentMusic.Play();
+        }
+    }
+}
+
+public class RandomLoopMusicPlayer : MusicPlayer
+{
+    private int currentId;
+    private int randomMin;
+    private int randomMax;
+
+    public RandomLoopMusicPlayer(AudioManager _audioManager)
+        : base(_audioManager)
+    {
+    }
+
+    override public void Next()
+    {
+        selectAndPlay();
+    }
+
+    override public void Play(int _randomMin, int _randomMax)
+    {
+        randomMin = _randomMin;
+        randomMax = _randomMax;
+        selectAndPlay();
+    }
+
+    private void selectAndPlay()
+    {
+        if (!selectNextId())
+        {
+            return;
+        }
+        //Debug.Log($"RandomLoopMusicPlayer Play {currentId}");
+        currentMusic = audioManager.MusicFiles[currentId];
+        currentMusic.Play();
+    }
+
+    private bool selectNextId()
+    {
+        if (randomMax <= randomMin)
+        {
+            //Debug.Log($"RandomLoopMusicPlayer Play ERROR: randomMax <= randomMin ({randomMax}) ({randomMin})");
+            return false;
+        }
+        currentId = Random.Range(randomMin, randomMax + 1);
+        return true;
+    }
+
+    override public void Update()
+    {
+        if (currentMusic && !currentMusic.isPlaying)
+        {
+            selectAndPlay();
         }
     }
 }
