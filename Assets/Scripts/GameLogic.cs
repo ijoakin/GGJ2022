@@ -7,16 +7,22 @@ public class GameLogic : MonoBehaviour
     public static GameLogic Instance;
     public bool DebugCurrentCharge;
 
-    [SerializeField]
     [Range(-100, 100)]
-    public int currentCharge = 0;
+    public int CurrentCharge = 0;
 
-    private int valueMonk = 41;
-    private int valueZen = 91;
+    public enum ChargeStates
+    {
+        FURY,
+        PUNK,
+        MONK,
+        ZEN
+    }
 
-    private int FuryPunk = -40;
-    private int Monk = 41;
-    private int MonkZen = 91;
+    public ChargeStates ChargeState;
+
+    private int THRESHOLD_FURY = -40;
+    private int THRESHOLD_MONK = 40;
+    private int THRESHOLD_ZEN = 90;
 
     private void Awake()
     {
@@ -26,64 +32,79 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ChargeState = ChargeStates.PUNK;
+        AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayMusicByCharge();
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Charge2(10);
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Charge2(-10);
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            AudioManager.Instance.PlayMusicNext();
+        }
+    }
+
+    public void Charge2(int value)
+    {
+        CurrentCharge = Bar.Instance.Charge(value);
+        CheckCharge();
     }
 
     public void Charge(int value)
     {
-        //TODO: call the bar to charge and get the currentValue
-        //currentCharge = 50;
-
-        //currentCharge = Bar.Instance.CurrentCharge;
-        Bar.Instance.Charge(value);
-        CheckCharge();
     }
+
 
     public void CheckCharge()
     {
-        currentCharge = Bar.Instance.CurrentCharge;
         if (DebugCurrentCharge)
         {
-            Debug.Log(currentCharge);
+            Debug.Log(CurrentCharge);
         }
-        
-        if (currentCharge >= valueZen)
-        {
-            Player.Instance.ConvertToZen();
-        }
-        else if (currentCharge >= valueMonk && currentCharge < valueZen)
-        {
-            Player.Instance.ConvertToMonk();
-        }
-        else if (currentCharge < valueMonk)
-        {
-            Player.Instance.ConvertToPunk();
-        }
-    }
 
-    public void PlayMusicByCharge()
-    {
-        currentCharge = Bar.Instance.CurrentCharge;
-        if (currentCharge < FuryPunk)
+        if (CurrentCharge >= THRESHOLD_ZEN)
         {
-            AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6);
+            if (ChargeState != ChargeStates.ZEN)
+            {
+                ChargeState = ChargeStates.ZEN;
+                Player.Instance.ConvertToZen();
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN, AudioManager.MusicId.TRANS);
+            }
         }
-        else if (currentCharge > MonkZen)
+        else if (CurrentCharge <= THRESHOLD_FURY)
         {
-            AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK_ZEN);
+            if (ChargeState != ChargeStates.FURY)
+            {
+                ChargeState = ChargeStates.FURY;
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, AudioManager.MusicId.TRANS);
+            }
         }
-        else if (currentCharge > Monk)
+        else if (CurrentCharge >= THRESHOLD_MONK && CurrentCharge < THRESHOLD_ZEN)
         {
-            AudioManager.Instance.PlayMusic(AudioManager.MusicId.MONK);
+            if (ChargeState != ChargeStates.MONK)
+            {
+                ChargeState = ChargeStates.MONK;
+                Player.Instance.ConvertToMonk();
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK, AudioManager.MusicId.TRANS);
+            }
         }
-        else
+        else if (CurrentCharge < THRESHOLD_MONK)
         {
-            AudioManager.Instance.PlayMusicRandom(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
+            if (ChargeState != ChargeStates.PUNK)
+            {
+                ChargeState = ChargeStates.PUNK;
+                Player.Instance.ConvertToPunk();
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7, AudioManager.MusicId.TRANS);
+            }
         }
     }
 }
