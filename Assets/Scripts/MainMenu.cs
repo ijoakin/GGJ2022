@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayButton()
     {
-        SceneManager.LoadScene("FinalLevel");
+        SceneManager.LoadScene("History");
     }
 
     public void CreditsButton()
