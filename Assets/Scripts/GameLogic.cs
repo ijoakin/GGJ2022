@@ -33,7 +33,7 @@ public class GameLogic : MonoBehaviour
     void Start()
     {
         ChargeState = ChargeStates.PUNK;
-        playMusicPunk();
+        AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
     }
 
     // Update is called once per frame
@@ -77,7 +77,7 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.ZEN;
                 Player.Instance.ConvertToZen();
-                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN, AudioManager.MusicId.TRANS);
             }
         }
         else if (CurrentCharge <= THRESHOLD_FURY)
@@ -85,7 +85,7 @@ public class GameLogic : MonoBehaviour
             if (ChargeState != ChargeStates.FURY)
             {
                 ChargeState = ChargeStates.FURY;
-                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6);
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, AudioManager.MusicId.TRANS);
             }
         }
         else if (CurrentCharge >= THRESHOLD_MONK && CurrentCharge < THRESHOLD_ZEN)
@@ -94,7 +94,7 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.MONK;
                 Player.Instance.ConvertToMonk();
-                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK);
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK, AudioManager.MusicId.TRANS);
             }
         }
         else if (CurrentCharge < THRESHOLD_MONK)
@@ -103,13 +103,8 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.PUNK;
                 Player.Instance.ConvertToPunk();
-                playMusicPunk();
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7, AudioManager.MusicId.TRANS);
             }
         }
-    }
-
-    private void playMusicPunk()
-    {
-        AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
     }
 }

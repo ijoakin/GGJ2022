@@ -94,14 +94,14 @@ public class AudioManager : MonoBehaviour
         musicPlayerController.Update();
     }
 
-    public void PlayMusic(MusicId _musicId)
+    public void PlayMusic(MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
-        musicPlayerController.PlayMusic(_musicId);
+        musicPlayerController.PlayMusic(_musicId, _transMusicId);
     }
 
-    public void PlayMusicLoop(MusicId _musicId)
+    public void PlayMusicLoop(MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
-        musicPlayerController.PlayMusicLoop(_musicId);
+        musicPlayerController.PlayMusicLoop(_musicId, _transMusicId);
     }
 
     public void PlayMusicNext()
@@ -109,9 +109,9 @@ public class AudioManager : MonoBehaviour
         musicPlayerController.PlayMusicNext();
     }
 
-    public void PlayMusicRandomLoop(AudioManager.MusicId _randomMin, AudioManager.MusicId _randomMax)
+    public void PlayMusicRandomLoop(AudioManager.MusicId _randomMin, AudioManager.MusicId _randomMax, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
-        musicPlayerController.PlayMusicRandomLoop((int)_randomMin, (int)_randomMax);
+        musicPlayerController.PlayMusicRandomLoop((int)_randomMin, (int)_randomMax, _transMusicId);
     }
 
     public void PlaySFX(AudioId audioId)
@@ -143,7 +143,15 @@ public class MusicPlayerController
 {
     private AudioManager audioManager;
     private MusicPlayer currentPlayer;
+    private AudioManager.MusicId musicId;
     private List<MusicPlayer> musicPlayers;
+    private PlayerTypes playerType;
+    private int randomMin;
+    private int randomMax;
+    private MusicPlayer simpleMusicPlayer;
+    private AudioManager.MusicId transMusicId;
+
+
     private enum PlayerTypes
     {
         SIMPLE,
@@ -154,25 +162,25 @@ public class MusicPlayerController
     public MusicPlayerController(AudioManager _audioManager)
     {
         audioManager = _audioManager;
+
         musicPlayers = new List<MusicPlayer>();
         musicPlayers.Add(new SimpleMusicPlayer(audioManager));
         musicPlayers.Add(new LoopMusicPlayer(audioManager));
         musicPlayers.Add(new RandomLoopMusicPlayer(audioManager));
         currentPlayer = musicPlayers[0];
+        simpleMusicPlayer = musicPlayers[0];
     }
 
-    public void PlayMusic(AudioManager.MusicId _musicId)
+    public void PlayMusic(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
-        currentPlayer.Stop();
-        currentPlayer = musicPlayers[(int)PlayerTypes.SIMPLE];
-        currentPlayer.Play(_musicId);
+        playerType = PlayerTypes.SIMPLE;
+        startPlaying(_musicId, _transMusicId);
     }
 
-    public void PlayMusicLoop(AudioManager.MusicId _musicId)
+    public void PlayMusicLoop(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
-        currentPlayer.Stop();
-        currentPlayer = musicPlayers[(int)PlayerTypes.LOOP];
-        currentPlayer.Play(_musicId);
+        playerType = PlayerTypes.LOOP;
+        startPlaying(_musicId, _transMusicId);
     }
 
     public void PlayMusicNext()
@@ -181,23 +189,76 @@ public class MusicPlayerController
         currentPlayer.Next();
     }
 
-    public void PlayMusicRandomLoop(int _randomMin, int _randomMax)
+    public void PlayMusicRandomLoop(int _randomMin, int _randomMax, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        playerType = PlayerTypes.RANDOM_LOOP;
+
+        musicId = AudioManager.MusicId.LAST;
+        randomMin = _randomMin;
+        randomMax = _randomMax;
+        transMusicId = _transMusicId;
+
         currentPlayer.Stop();
-        currentPlayer = musicPlayers[(int)PlayerTypes.RANDOM_LOOP];
-        currentPlayer.Play(_randomMin, _randomMax);
+        currentPlayer = musicPlayers[(int)playerType];
+
+        if (transMusicId != AudioManager.MusicId.LAST)
+        {
+            simpleMusicPlayer.Play(transMusicId);
+        }
+        else
+        {
+            currentPlayer.Play(randomMin, randomMax);
+        }
+    }
+
+    private void startPlaying(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
+    {
+        musicId = _musicId;
+        transMusicId = _transMusicId;
+
+        currentPlayer.Stop();
+        currentPlayer = musicPlayers[(int)playerType];
+
+        if (transMusicId != AudioManager.MusicId.LAST)
+        {
+            simpleMusicPlayer.Play(transMusicId);
+        }
+        else
+        {
+            currentPlayer.Play(musicId);
+        }
     }
 
     public void Update()
     {
-        currentPlayer.Update();
+        if (transMusicId != AudioManager.MusicId.LAST
+            && simpleMusicPlayer.CurrentMusic
+            && !simpleMusicPlayer.CurrentMusic.isPlaying)
+        {
+            transMusicId = AudioManager.MusicId.LAST;
+            if (playerType == PlayerTypes.RANDOM_LOOP)
+            {
+                currentPlayer.Play(randomMin, randomMax);
+            }
+            else
+            {
+                currentPlayer.Play(musicId);
+            }
+        }
+        else if (transMusicId == AudioManager.MusicId.LAST)
+        {
+            currentPlayer.Update();
+        }
     }
 }
 
 public abstract class MusicPlayer
 {
     protected AudioManager audioManager;
-    protected AudioSource currentMusic;
+    public AudioSource CurrentMusic;
+    protected AudioManager.MusicId musicId;
+    protected AudioSource transMusic;
+    protected AudioManager.MusicId transMusicId;
 
     public MusicPlayer(AudioManager _audioManager)
     {
@@ -208,21 +269,24 @@ public abstract class MusicPlayer
     {
     }
 
-    public virtual void Play(AudioManager.MusicId _musicId)
+    public virtual void Play(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        musicId = _musicId;
+        transMusicId = _transMusicId;
     }
 
-    public virtual void Play(int _randomMin, int _randomMax)
+    public virtual void Play(int _randomMin, int _randomMax, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        transMusicId = _transMusicId;
     }
 
     public void Stop()
     {
-        if (!currentMusic)
+        if (!CurrentMusic)
         {
             return;
         }
-        currentMusic.Stop();
+        CurrentMusic.Stop();
     }
 
     public virtual void Update()
@@ -237,10 +301,12 @@ public class SimpleMusicPlayer : MusicPlayer
     {
     }
 
-    override public void Play(AudioManager.MusicId _musicId)
+    override public void Play(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        base.Play(_musicId);
         //Debug.Log($"SimpleMusicPlayer Play {_musicId}");
-        audioManager.MusicFiles[(int)_musicId].Play();
+        CurrentMusic = audioManager.MusicFiles[(int)_musicId];
+        CurrentMusic.Play();
     }
 }
 
@@ -253,22 +319,23 @@ public class LoopMusicPlayer : MusicPlayer
 
     override public void Next()
     {
-        currentMusic.Play();
+        CurrentMusic.Play();
     }
 
-    override public void Play(AudioManager.MusicId _musicId)
+    override public void Play(AudioManager.MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        base.Play(_musicId);
         //Debug.Log($"LoopMusicPlayer Play {_musicId}");
-        currentMusic = audioManager.MusicFiles[(int)_musicId];
-        currentMusic.Play();
+        CurrentMusic = audioManager.MusicFiles[(int)_musicId];
+        CurrentMusic.Play();
     }
 
     override public void Update()
     {
-        if (currentMusic && !currentMusic.isPlaying)
+        if (CurrentMusic && !CurrentMusic.isPlaying)
         {
             //Debug.Log($"LoopMusicPlayer PlayLoop");
-            currentMusic.Play();
+            CurrentMusic.Play();
         }
     }
 }
@@ -289,8 +356,9 @@ public class RandomLoopMusicPlayer : MusicPlayer
         selectAndPlay();
     }
 
-    override public void Play(int _randomMin, int _randomMax)
+    override public void Play(int _randomMin, int _randomMax, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        base.Play(_randomMin, _randomMax, _transMusicId);
         randomMin = _randomMin;
         randomMax = _randomMax;
         selectAndPlay();
@@ -303,8 +371,8 @@ public class RandomLoopMusicPlayer : MusicPlayer
             return;
         }
         //Debug.Log($"RandomLoopMusicPlayer Play {currentId}");
-        currentMusic = audioManager.MusicFiles[currentId];
-        currentMusic.Play();
+        CurrentMusic = audioManager.MusicFiles[currentId];
+        CurrentMusic.Play();
     }
 
     private bool selectNextId()
@@ -320,7 +388,7 @@ public class RandomLoopMusicPlayer : MusicPlayer
 
     override public void Update()
     {
-        if (currentMusic && !currentMusic.isPlaying)
+        if (CurrentMusic && !CurrentMusic.isPlaying)
         {
             selectAndPlay();
         }
