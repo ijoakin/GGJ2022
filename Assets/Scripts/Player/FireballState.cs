@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireballState : PlayerState
 {
-    [SerializeField] private float waitDuration = 20f;
+    [SerializeField] private float waitDuration = 2.5f;
 
     public override void OnEnterState()
     {
@@ -13,12 +13,12 @@ public class FireballState : PlayerState
 
     public override void OnExitState()
     {
-        
     }
 
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
         playerGameObject.StateFinished();
+        playerGameObject.ExecuteState<MonkIdleState>();
     }
 }

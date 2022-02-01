@@ -226,16 +226,16 @@ public class Player : MonoBehaviour, IDamageTarget
         //    }
         //}
 
-        //if (invicibleCounter >= 0)
-        //{
-        //    invicibleCounter -= Time.deltaTime; //one second    
+        if (invicibleCounter >= 0)
+        {
+            invicibleCounter -= Time.deltaTime; //one second    
 
-        //    if (invicibleCounter <= 0)
-        //    {
-        //        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
-        //    }
-        //    return;
-        //}
+            if (invicibleCounter <= 0)
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            }
+            return;
+        }
 
         //if (Input.GetButtonDown("Jump") && isGrounded)
         //{
@@ -285,19 +285,25 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         if (!stateFinished && CurrentStateIs<FireballState>())
         {
-            return;
+            ExecuteState<FireballState>();
         }
-
-            //WALK
-        if (Input.GetAxis("Horizontal") != 0)
-            ExecuteState<MonkRunState>();
         else
-            ExecuteState<MonkIdleState>();
-
-        if (Input.GetButtonDown("Fire1"))
         {
-            ExecuteState<MonkKickState>();
+            //El problema esta acá
+            if (Input.GetAxis("Horizontal") != 0)
+                ExecuteState<MonkRunState>();
+            else
+                ExecuteState<MonkIdleState>();
         }
+
+
+        //WALK
+
+
+        //if (Input.GetButtonDown("Fire1"))
+        //{
+        //    ExecuteState<MonkKickState>();
+        //}
 
         //Remove
         if (Input.GetKeyDown(KeyCode.G))
@@ -435,11 +441,9 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.playerMode = PlayerMode.MONK;
             ExecuteState<FireballState>();
-            
+
             boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
         }
-        
-        //boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
     }
 
     public void ConvertToPunk()
