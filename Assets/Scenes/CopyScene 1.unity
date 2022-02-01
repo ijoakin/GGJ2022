@@ -1375,23 +1375,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f57c7d9e0639745a07e93eace1d85a, type: 3}
---- !u!1 &2060690729 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6004952763649376805, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
-  m_PrefabInstance: {fileID: 2064590531}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2060690730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060690729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b4623253d92ae044b770b82618cd528, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2064590531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1399,6 +1382,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6004952763649376800, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
+      propertyPath: animations.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004952763649376800, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
+      propertyPath: animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: 95254012be74d484084fe9cb9eaa66d5, type: 2}
     - target: {fileID: 6004952763649376801, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1417,11 +1408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6004952763649376801, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.93
+      value: 9.72
       objectReference: {fileID: 0}
     - target: {fileID: 6004952763649376801, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.3588905
+      value: -4.7
       objectReference: {fileID: 0}
     - target: {fileID: 6004952763649376801, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
       propertyPath: m_LocalPosition.z
