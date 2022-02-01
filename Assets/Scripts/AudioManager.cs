@@ -79,7 +79,6 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
         musicPlayerController = new MusicPlayerController(this);
     }
 
