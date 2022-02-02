@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PunkWalkState : PlayerState
 {
-    [SerializeField] private float waitDuration = 1f;
+    private float waitDuration = 2f;
 
     public override void OnEnterState()
     {
@@ -29,8 +29,6 @@ public class PunkWalkState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.StateFinished();
+        playerGameObject.isWalking = false;
     }
-
-    
 }

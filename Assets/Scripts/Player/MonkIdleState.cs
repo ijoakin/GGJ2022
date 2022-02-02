@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MonkIdleState : PlayerState
 {
-    [SerializeField] private float waitDuration = 2;
+    private float waitDuration = 0.1f;
 
     public override void OnEnterState()
     {
@@ -17,6 +17,6 @@ public class MonkIdleState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.StateFinished();
+        playerGameObject.isIdle = false;
     }
 }

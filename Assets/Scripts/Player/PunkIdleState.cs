@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PunkIdleState : PlayerState
 {
-    [SerializeField] private float waitDuration = 2;
+    private float waitDuration = 0.2f;
 
     public override void OnEnterState()
     {
@@ -17,7 +17,7 @@ public class PunkIdleState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.StateFinished();
+        playerGameObject.isIdle = false;
     }
 
 }

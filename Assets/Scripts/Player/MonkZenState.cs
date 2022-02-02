@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MonkZenState : PlayerState
 {
-    [SerializeField] private float waitDuration = 2;
+    private float waitDuration = 0.5f;
 
     public override void OnEnterState()
     {
@@ -17,6 +17,8 @@ public class MonkZenState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.StateFinished();
+        playerGameObject.isConvertingToAang = false;
+        playerGameObject.isAvatarMode = true;
+        playerGameObject.ExecuteState<MonkZenContinueState>();
     }
 }

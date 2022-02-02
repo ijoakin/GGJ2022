@@ -19,18 +19,10 @@ public class Player : MonoBehaviour, IDamageTarget
     private float puncherCount;
     private float puncherTotal = 0.5f;
 
-    private float kickCount;
     private float kickTotal = 0.5f;
 
-
     private BoxCollider2D boxCollider;
-
-    private float fireBallCount;
-    private float fireBallTotal = 2.2f;
-
-    private float zenCount;
-    private float zenTotal = 0.75f;
-
+    
     private float invicibleLenght = 2f;
     private float invicibleCounter;
 
@@ -41,25 +33,18 @@ public class Player : MonoBehaviour, IDamageTarget
     private string current_animation;
     private PlayerState currentState;
 
-    public bool stateFinished;
+    public bool isIdle = false;
+    public bool isWalking = false;
+    public bool isPunching = false;
+    public bool isFireball = false;
+    public bool isConvertingToAang = false;
+    public bool isAvatarMode = false;
+
 
     [SerializeField] private string currentStateName = "";
 
     [Header("Animation")]
     [SerializeField] private AnimatorController animatorController;
-
-    public enum PlayerStateId
-    {
-        Player_Idle,
-        Player_Punch,
-        Player_Walk,
-        Player_Fireball,
-        Player_Monk_Idle,
-        Player_Monk_Run,
-        Player_Monk_Kick,
-        Player_Monk_Zen,
-        Player_Monk_Zen_Continue
-    }
 
     [Header("Attack")]
     [SerializeField] private PunchController punchController;
@@ -67,8 +52,6 @@ public class Player : MonoBehaviour, IDamageTarget
 
     [SerializeField]
     private int damagePoints;
-
-    private bool IsConverting = false;
 
     public enum PlayerMode
     {
@@ -83,11 +66,6 @@ public class Player : MonoBehaviour, IDamageTarget
         Instance = this;
     }
 
-    public void StateFinished()
-    {
-        stateFinished = true;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -98,13 +76,14 @@ public class Player : MonoBehaviour, IDamageTarget
         animatorController = GetComponent<AnimatorController>(); 
 
         puncherCount = puncherTotal;
-        kickCount = kickTotal;
         invicibleCounter = 0;
         this.playerMode = PlayerMode.PUNK;
 
         chargeCount = chargeLenght;
 
         ExecuteState<PunkIdleState>();
+
+
     }
     public void PlayAnimation()
     {
@@ -124,23 +103,6 @@ public class Player : MonoBehaviour, IDamageTarget
         animator.Play(animationClip.name.ToString());
     }
 
-    bool isIdle()
-    {
-        //Debug.Log($"{animator.GetBool("Monk_Idle")}");
-
-        if (current_animation == "Player_Monk_Idle")
-        {
-            return true;
-        }
-
-        if ((playerMode == PlayerMode.PUNK) && (!animator.GetBool("Walk") && !animator.GetBool("Punch")))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     public void ExecuteState<T>() where T : Component
     {
         var componentInObject = GetComponent<T>();
@@ -150,7 +112,6 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 currentState.OnExitState();
             }
-            stateFinished = false;
 
             currentState = componentInObject as PlayerState;
             currentState.SetEnemyGameObject(this);
@@ -195,36 +156,15 @@ public class Player : MonoBehaviour, IDamageTarget
             currentState.OnUpdateState();
         }
 
-        /*
-
-        if (stateFinished && CurrentStateIs<PunkIdleState>())
+        if ((chargeCount >= 0) && isIdle)
         {
-            ExecuteState<PunkIdleState>();
+            chargeCount -= Time.deltaTime;
+            if (chargeCount <= 0)
+            {
+                Charge(10);
+                chargeCount = chargeLenght;
+            }
         }
-
-        if (stateFinished && CurrentStateIs<PunkPunchState>())
-        {
-            ExecuteState<PunkPunchState>();
-        }
-
-        if (stateFinished && CurrentStateIs<PunkWalkState>())
-        {
-            ExecuteState<PunkWalkState>();
-        }
-
-        */
-
-        ////Debug.Log($"{chargeCount}: {isIdle()}");
-
-        //if ((chargeCount >= 0) && isIdle())
-        //{
-        //    chargeCount -= Time.deltaTime;
-        //    if (chargeCount <= 0)
-        //    {
-        //        Charge(10);
-        //        chargeCount = chargeLenght;
-        //    }
-        //}
 
         if (invicibleCounter >= 0)
         {
@@ -237,26 +177,13 @@ public class Player : MonoBehaviour, IDamageTarget
             return;
         }
 
-        //if (Input.GetButtonDown("Jump") && isGrounded)
-        //{
-        //    var audioId = Random.Range(15, 17);
-        //    PlayerSounds.Instance.PlayJumpPunk();
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            var audioId = Random.Range(15, 17);
+            PlayerSounds.Instance.PlayJumpPunk();
 
-        //    rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
-        //}
-
-        ////Remove this. the enemy will call TakeDamage
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    Charge(10);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    TakeDamage(10);
-        //}
-
-
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
+        }
     }
     public void Punch()
     {
@@ -283,94 +210,51 @@ public class Player : MonoBehaviour, IDamageTarget
 
     private void UpdateMonk()
     {
-        if (!stateFinished && CurrentStateIs<FireballState>())
+        if (isFireball || isPunching || isConvertingToAang || isAvatarMode)
         {
-            ExecuteState<FireballState>();
+            return;
         }
         else
         {
             //El problema esta acá
             if (Input.GetAxis("Horizontal") != 0)
+            {
+                isWalking = true;
                 ExecuteState<MonkRunState>();
+            }
             else
+            {
+                isIdle = true;
                 ExecuteState<MonkIdleState>();
+            }
         }
 
 
-        //WALK
-
-
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        //    ExecuteState<MonkKickState>();
-        //}
+        if (Input.GetButtonDown("Fire1"))
+        {
+            isPunching = true;
+            ExecuteState<MonkKickState>();
+        }
 
         //Remove
         if (Input.GetKeyDown(KeyCode.G))
         {
             this.ConvertToPunk();
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            this.ConvertToZen();
+        }
 
-        //if (Input.GetButtonDown("Fire1") && !animator.GetBool("Monk_Kick"))
-        //{
-        //    animator.SetBool("Monk_Kick", true);
-        //    PlayerSounds.Instance.PlayJumpMonk();
-        //    Punch();
-        //}
-
-        //if (animator.GetBool("Monk_Kick"))
-        //{
-        //    kickCount -= Time.deltaTime;
-
-        //    if (kickCount <= 0)
-        //    {
-        //        kickCount = kickTotal;
-        //        animator.SetBool("Monk_Kick", false);
-        //    }
-        //}
-
-        //if (animator.GetBool("FireBall"))
-        //{
-        //    fireBallCount -= Time.deltaTime;
-        //    if (fireBallCount <= 0)
-        //    {
-        //        animator.SetBool("Monk_Idle", true);
-        //        animator.SetBool("FireBall", false);
-        //        IsConverting = false;
-        //    }
-        //}
-
-        //if (animator.GetBool("Zen"))
-        //{
-        //    zenCount -= Time.deltaTime;
-        //    if (zenCount <= 0)
-        //    {
-        //        animator.SetBool("Zen", false);
-        //        animator.SetBool("ZenContinue", true);
-        //    }
-        //}
-
-        //if (rigidbody.velocity.x > 0)
-        //{
-        //    spriteRenderer.flipX = false;
-        //}
-        //else if (this.rigidbody.velocity.x < 0)
-        //{
-        //    spriteRenderer.flipX = true;
-        //}
-
-        //if (rigidbody.velocity.x != 0)
-        //{
-        //    animator.SetBool("Monk_Walk", true);
-        //}
-        //else
-        //{
-        //    animator.SetBool("Monk_Walk", false);
-        //}
     }
 
     private void UpdatePunk()
     {
+        if(isPunching)
+        {
+            return;
+        }
+
         //WALK
         if (Input.GetAxis("Horizontal") != 0)
             ExecuteState<PunkWalkState>();
@@ -379,6 +263,7 @@ public class Player : MonoBehaviour, IDamageTarget
 
         if (Input.GetButtonDown("Fire1"))
         {
+            isPunching = true;
             ExecuteState<PunkPunchState>();
         }
 
@@ -387,50 +272,13 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.ConvertToMonk();
         }
-
-        //if (Input.GetButtonDown("Fire1") && currentState != PlayerState.Player_Punch)
-        //{
-        //    currentState = PlayerState.Player_Punch;
-        //    PlayAnimation();
-
-        //    Punch();
-        //    PlayerSounds.Instance.PlayPunch();
-        //}
-
-        //if (currentState == PlayerState.Player_Punch)
-        //{
-        //    puncherCount -= Time.deltaTime;
-        //    if (puncherCount <= 0)
-        //    {
-        //        puncherCount = puncherTotal;
-        //        currentState = PlayerState.Player_Idle;
-        //        PlayAnimation();
-        //    }
-        //}
-
-        //if (rigidbody.velocity.x != 0)
-        //{
-        //    animator.SetBool("Walk", true);
-        //}
-        //else
-        //{
-        //    animator.SetBool("Walk", false);
-        //}
-
-        //if (rigidbody.velocity.x > 0)
-        //{
-        //    spriteRenderer.flipX = true;
-        //}
-        //else if (this.rigidbody.velocity.x < 0)
-        //{
-        //    spriteRenderer.flipX = false;
-        //}
     }
 
     public void ConvertToZen()
     {
         if (!animator.GetBool("ZenContinue"))
         {
+            isConvertingToAang = true;
             ExecuteState<MonkZenState>();
         }
     }
@@ -441,7 +289,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.playerMode = PlayerMode.MONK;
             ExecuteState<FireballState>();
-
+            isFireball = true;
             boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
         }
     }
@@ -452,7 +300,6 @@ public class Player : MonoBehaviour, IDamageTarget
 
         boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
     }
-   
 
     public void Charge(int value)
     {

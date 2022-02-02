@@ -1382,6 +1382,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1743334522407778280, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
+      propertyPath: waitDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6004952763649376800, guid: 402b2937d614bca45b1d4973817aa2d6, type: 3}
       propertyPath: animations.Array.size
       value: 3

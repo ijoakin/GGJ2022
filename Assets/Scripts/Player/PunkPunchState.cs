@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PunkPunchState : PlayerState
 {
-    [SerializeField] private float waitDuration = 2;
+    private float waitDuration = 0.5f;
 
     public override void OnEnterState()
     {
@@ -19,6 +19,6 @@ public class PunkPunchState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.StateFinished();
+        playerGameObject.isPunching = false;
     }
 }
