@@ -279,6 +279,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (!animator.GetBool("ZenContinue"))
         {
             isConvertingToAang = true;
+            PlayerSounds.Instance.PlayTransformationZen();
             ExecuteState<MonkZenState>();
         }
     }
@@ -289,6 +290,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.playerMode = PlayerMode.MONK;
             ExecuteState<FireballState>();
+            PlayerSounds.Instance.PlayTransformation();
             isFireball = true;
             boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
         }

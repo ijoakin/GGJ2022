@@ -20,9 +20,9 @@ public class GameLogic : MonoBehaviour
 
     public ChargeStates ChargeState;
 
-    private int THRESHOLD_FURY = -40;
-    private int THRESHOLD_MONK = 40;
-    private int THRESHOLD_ZEN = 90;
+    private const int THRESHOLD_FURY = -40;
+    private const int THRESHOLD_MONK = 50;
+    private const int THRESHOLD_ZEN = 90;
 
     private void Awake()
     {
