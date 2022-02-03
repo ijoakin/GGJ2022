@@ -7,6 +7,7 @@ public class MonkZenContinueState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         StartCoroutine(Wait());
     }
 
@@ -15,6 +16,8 @@ public class MonkZenContinueState : PlayerState
     }
     public override void OnUpdateState()
     {
+        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
+
         if (rigidbody.velocity.x > 0)
         {
             playerSpriteRenderer.flipX = false;
@@ -28,6 +31,5 @@ public class MonkZenContinueState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        //playerGameObject.isAvatarMode = false;
     }
 }

@@ -7,6 +7,7 @@ public abstract class PlayerState: MonoBehaviour
     protected Rigidbody2D rigidbody;
     protected Player playerGameObject;
     protected SpriteRenderer playerSpriteRenderer;
+    protected bool stateIsFinished;
 
     public void SetSpriteRenderer(SpriteRenderer _spriteRenderer)
     {
@@ -28,7 +29,10 @@ public abstract class PlayerState: MonoBehaviour
         return animation;
     }
 
-    public abstract void OnEnterState();
+    public virtual void OnEnterState()
+    {
+        stateIsFinished = false;
+    }
 
     public virtual void OnUpdateState()
     {

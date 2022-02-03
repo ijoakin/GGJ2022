@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 7844785484820535653}
   - component: {fileID: 1279998842464334841}
   - component: {fileID: 2019551776217738126}
+  - component: {fileID: 4859538258104395004}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -166,7 +167,12 @@ MonoBehaviour:
   WhatLayerIsGround:
     serializedVersion: 2
     m_Bits: 8
-  stateFinished: 0
+  isIdle: 0
+  isWalking: 0
+  isPunching: 0
+  isFireball: 0
+  isConvertingToAang: 0
+  isAvatarMode: 0
   currentStateName: 
   animatorController: {fileID: 0}
   punchController: {fileID: 8388916209226613856, guid: cbe2ec39ab26a4a489a18446b5ed8358, type: 3}
@@ -217,7 +223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 95254012be74d484084fe9cb9eaa66d5, type: 2}
-  waitDuration: 2
 --- !u!114 &7973956757332273528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 5a9413e15fe48de4f9fd1a5b286d7c5d, type: 2}
-  waitDuration: 2
 --- !u!114 &476324277724075749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,7 +249,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 1ffb790470384e4428d1e45c0564ae36, type: 2}
-  waitDuration: 2
 --- !u!114 &8090696354779871127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +262,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 2fdf6d5136b681242ae7653ddc827a4f, type: 2}
-  waitDuration: 2
 --- !u!114 &5089486557152202550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +275,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 5f6fd6e27c1c278419a70135c70bb313, type: 2}
-  waitDuration: 2
 --- !u!114 &5707031769012427641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +288,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: b4448bf3047e5df40950b29b4a73e18e, type: 2}
-  waitDuration: 2
 --- !u!114 &1743334522407778280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,7 +301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 2461e668c75af1d45bd058f4f8594a81, type: 2}
-  waitDuration: 2
 --- !u!114 &7844785484820535653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +314,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: 8aa5ce2584540d84bbf311d8e1f0f85e, type: 2}
-  waitDuration: 2
 --- !u!114 &1279998842464334841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +327,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 7400000, guid: c083b73dfd861af4db50642896979a7f, type: 2}
-  waitDuration: 2
 --- !u!114 &2019551776217738126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +337,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4a5e60c5b3fe5d4e8a66b52adf61f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4859538258104395004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004952763649376805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4623253d92ae044b770b82618cd528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6004952763806033847

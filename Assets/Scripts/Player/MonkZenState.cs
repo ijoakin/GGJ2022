@@ -7,6 +7,7 @@ public class MonkZenState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         StartCoroutine(Wait());
     }
 
@@ -17,8 +18,6 @@ public class MonkZenState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.isConvertingToAang = false;
-        playerGameObject.isAvatarMode = true;
         playerGameObject.ExecuteState<MonkZenContinueState>();
     }
 }

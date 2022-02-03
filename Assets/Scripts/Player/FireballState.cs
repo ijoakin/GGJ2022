@@ -8,6 +8,7 @@ public class FireballState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         StartCoroutine(Wait());
     }
 
@@ -18,8 +19,7 @@ public class FireballState : PlayerState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.isFireball = false;
-
+        stateIsFinished = true;
         playerGameObject.ExecuteState<MonkIdleState>();
     }
 }

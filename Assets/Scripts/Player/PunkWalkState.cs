@@ -7,6 +7,7 @@ public class PunkWalkState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         StartCoroutine(Wait());
     }
 
@@ -16,6 +17,8 @@ public class PunkWalkState : PlayerState
 
     public override void OnUpdateState()
     {
+        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
+
         if (rigidbody.velocity.x > 0)
         {
             playerSpriteRenderer.flipX = true;
@@ -24,11 +27,19 @@ public class PunkWalkState : PlayerState
         {
             playerSpriteRenderer.flipX = false;
         }
+        else
+        {
+            playerGameObject.ExecuteState<PunkIdleState>();
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            playerGameObject.ExecuteState<PunkPunchState>();
+        }
     }
 
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.isWalking = false;
     }
 }

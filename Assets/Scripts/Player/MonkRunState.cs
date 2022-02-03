@@ -7,6 +7,7 @@ public class MonkRunState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         StartCoroutine(Wait());
     }
 
@@ -16,6 +17,8 @@ public class MonkRunState : PlayerState
 
     public override void OnUpdateState()
     {
+        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
+
         if (rigidbody.velocity.x > 0)
         {
             playerSpriteRenderer.flipX = false;
@@ -24,10 +27,18 @@ public class MonkRunState : PlayerState
         {
             playerSpriteRenderer.flipX = true;
         }
+        else
+        {
+            playerGameObject.ExecuteState<MonkIdleState>();
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            playerGameObject.ExecuteState<MonkKickState>();
+        }
     }
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.isWalking = false;
     }
 }

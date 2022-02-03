@@ -7,6 +7,7 @@ public class MonkKickState : PlayerState
 
     public override void OnEnterState()
     {
+        base.OnEnterState();
         playerGameObject.Punch();
         PlayerSounds.Instance.PlayPunch();
         StartCoroutine(Wait());
@@ -14,11 +15,12 @@ public class MonkKickState : PlayerState
 
     public override void OnExitState()
     {
+        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
     }
 
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitDuration);
-        playerGameObject.isPunching = false;
+        playerGameObject.ExecuteState<MonkIdleState>();
     }
 }
