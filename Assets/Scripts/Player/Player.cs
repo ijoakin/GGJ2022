@@ -145,6 +145,14 @@ public class Player : MonoBehaviour, IDamageTarget
 
         isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
 
+        if (Input.GetButtonDown("Jump")) // && isGrounded)
+        {
+            var audioId = Random.Range(15, 17);
+            PlayerSounds.Instance.PlayJumpPunk();
+
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
+        }
+
         if (playerMode == PlayerMode.PUNK)
             UpdatePunk();
         else
@@ -175,14 +183,6 @@ public class Player : MonoBehaviour, IDamageTarget
                 spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
             }
             return;
-        }
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            var audioId = Random.Range(15, 17);
-            PlayerSounds.Instance.PlayJumpPunk();
-
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
         }
     }
     public void Punch()
