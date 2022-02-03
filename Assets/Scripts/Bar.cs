@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class Bar : MonoBehaviour
 {
-    public static Bar Instance;
     public const int CHARGE_MIN = -100;
     public const int CHARGE_MAX = 100;
+
+    public static Bar Instance;
 
     // -100 to +100
     public int CurrentCharge;
 
-    public GameObject Needle;
+    public Transform Needle;
+    private Vector3 needleInitialPosition;
 
     private void Awake()
     {
@@ -19,7 +21,7 @@ public class Bar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Needle.transform.position = gameObject.transform.position;
+        needleInitialPosition = Needle.transform.position;
     }
 
     // Update is called once per frame
@@ -38,8 +40,8 @@ public class Bar : MonoBehaviour
     {
         Vector3 pos = Needle.transform.position;
 
-        // 0.85 porque coso
-        pos.x = gameObject.transform.position.x + (CurrentCharge / 100.0f) * 1.95f;
+        // I may explain the multiply factor, but you wouldn't get it... [smoking...]
+        pos.x = needleInitialPosition.x + (CurrentCharge / 100.0f) * 150.0f;
         Needle.transform.position = pos;
     }
 }

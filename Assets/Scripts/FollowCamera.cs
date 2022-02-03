@@ -8,7 +8,6 @@ public class FollowCamera : MonoBehaviour
 
     private Transform farBackGround;
     private Transform middleBackGround;
-    private Transform barTransform;
 
     public float minHeight;
     public float maxHeight;
@@ -22,7 +21,6 @@ public class FollowCamera : MonoBehaviour
 
         farBackGround = GameObject.Find("back").transform;
         middleBackGround = GameObject.Find("middle").transform;
-        barTransform = GameObject.Find("Bar").transform;
 
         lastPosX = transform.position.x;
         lastPosY = transform.position.y;
@@ -39,7 +37,6 @@ public class FollowCamera : MonoBehaviour
         if (amountToMoveX != 0)
         {
             farBackGround.position = farBackGround.position + new Vector3(amountToMoveX, amountToMoveY, 0f);
-            barTransform.position = barTransform.position + new Vector3(amountToMoveX, amountToMoveY, 0f);
             middleBackGround.position = middleBackGround.position + new Vector3(amountToMoveX * .5f, amountToMoveY * .5f, 0f);
         }
 
