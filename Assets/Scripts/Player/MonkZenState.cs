@@ -1,23 +1,18 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MonkZenState : PlayerState
 {
-    private float waitDuration = 0.5f;
-
-    public override void OnEnterState()
+    public override void OnUpdateState()
     {
-        base.OnEnterState();
-        StartCoroutine(Wait());
-    }
+        playerRigidbody.velocity = new Vector2(player.MoveSpeed * Input.GetAxis("Horizontal"), playerRigidbody.velocity.y);
 
-    public override void OnExitState()
-    {
-    }
-
-    private IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(waitDuration);
-        playerGameObject.ExecuteState<MonkZenContinueState>();
+        if (playerRigidbody.velocity.x > 0)
+        {
+            playerSpriteRenderer.flipX = false;
+        }
+        else if (this.playerRigidbody.velocity.x < 0)
+        {
+            playerSpriteRenderer.flipX = true;
+        }
     }
 }

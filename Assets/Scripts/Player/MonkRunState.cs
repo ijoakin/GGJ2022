@@ -1,44 +1,17 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MonkRunState : PlayerState
 {
-    private float waitDuration = 2;
-
-    public override void OnEnterState()
-    {
-        base.OnEnterState();
-        StartCoroutine(Wait());
-    }
-
-    public override void OnExitState()
-    {
-    }
-
     public override void OnUpdateState()
     {
-        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
-
-        if (rigidbody.velocity.x > 0)
-        {
-            playerSpriteRenderer.flipX = false;
-        }
-        else if (this.rigidbody.velocity.x < 0)
-        {
-            playerSpriteRenderer.flipX = true;
-        }
-        else
-        {
-            playerGameObject.ExecuteState<MonkIdleState>();
-        }
+        playerRigidbody.velocity = new Vector2(player.MoveSpeed * Input.GetAxis("Horizontal"), playerRigidbody.velocity.y);
 
         if (Input.GetButtonDown("Fire1"))
         {
-            playerGameObject.ExecuteState<MonkKickState>();
+            player.ExecuteState<MonkKickState>();
+        } else if (playerRigidbody.velocity.x == 0)
+        {
+            player.ExecuteState<MonkIdleState>();
         }
-    }
-    private IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(waitDuration);
     }
 }

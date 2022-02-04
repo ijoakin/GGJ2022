@@ -82,11 +82,6 @@ public class AudioManager : MonoBehaviour
         musicPlayerController = new MusicPlayerController(this);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {

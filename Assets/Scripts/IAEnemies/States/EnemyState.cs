@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyState : MonoBehaviour
 {
-    [SerializeField] private AnimationClip animation;
+    [SerializeField] private AnimationClip playerAnimation;
 
     protected Rigidbody2D _rigidbody2D;
     protected EnemyGameObject enemyGameObject;
@@ -21,7 +21,7 @@ public abstract class EnemyState : MonoBehaviour
 
     public AnimationClip GetAnimationClip()
     {
-        return animation;
+        return playerAnimation;
     }
 
     public abstract void OnEnterState();

@@ -1,30 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PunkPunchState : PlayerState
 {
-    private float waitDuration = 0.5f;
-
     public override void OnEnterState()
     {
         base.OnEnterState();
-        playerGameObject.Punch();
-        PlayerSounds.Instance.PlayPunch();
-        StartCoroutine(Wait());
+        //player.Punch();
+        //PlayerSounds.Instance.PlayPunch();
     }
 
-    public override void OnExitState()
+    public void OnAnimationEndedPunch()
     {
-    }
-    public override void OnUpdateState()
-    {
-        rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
-    }
-
-    private IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(waitDuration);
-        this.stateIsFinished = true;
-        playerGameObject.ExecuteState<PunkIdleState>();
+        player.ExecuteState<PunkIdleState>();
     }
 }

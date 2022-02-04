@@ -131,12 +131,12 @@ TextureImporter:
       name: walk_0
       rect:
         serializedVersion: 2
-        x: 31
+        x: 39
         y: 0
         width: 28
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 52
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,12 +152,12 @@ TextureImporter:
       name: walk_1
       rect:
         serializedVersion: 2
-        x: 127
+        x: 131
         y: 0
         width: 24
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 52
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: walk_2
       rect:
         serializedVersion: 2
-        x: 223
+        x: 227
         y: 0
         width: 24
         height: 52
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,12 +194,12 @@ TextureImporter:
       name: walk_3
       rect:
         serializedVersion: 2
-        x: 319
+        x: 321
         y: 0
         width: 24
         height: 52
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

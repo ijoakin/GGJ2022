@@ -2,12 +2,11 @@
 
 public abstract class PlayerState: MonoBehaviour
 {
-    [SerializeField] private AnimationClip animation;
+    public AnimationClip playerAnimation;
 
-    protected Rigidbody2D rigidbody;
-    protected Player playerGameObject;
+    protected Player player;
+    protected Rigidbody2D playerRigidbody;
     protected SpriteRenderer playerSpriteRenderer;
-    protected bool stateIsFinished;
 
     public void SetSpriteRenderer(SpriteRenderer _spriteRenderer)
     {
@@ -16,28 +15,29 @@ public abstract class PlayerState: MonoBehaviour
 
     public void SetRigidBody2D(Rigidbody2D _rigidbody2D)
     {
-        this.rigidbody = _rigidbody2D;
+        this.playerRigidbody = _rigidbody2D;
     }
 
     public void SetEnemyGameObject(Player playerGameObject)
     {
-        this.playerGameObject = playerGameObject;
+        this.player = playerGameObject;
     }
 
     public AnimationClip GetAnimationClip()
     {
-        return animation;
+        return playerAnimation;
     }
 
     public virtual void OnEnterState()
     {
-        stateIsFinished = false;
+    }
+
+    public virtual void OnExitState()
+    {
     }
 
     public virtual void OnUpdateState()
     {
     }
-
-    public abstract void OnExitState();
 }
 

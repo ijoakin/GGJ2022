@@ -12,12 +12,10 @@ public class Player : MonoBehaviour, IDamageTarget
     public GameObject GroundCheckPoint;
     public LayerMask WhatLayerIsGround;
 
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D playerRigidbody;
     private bool isGrounded;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-
-    private BoxCollider2D boxCollider;
     
     private float invicibleLenght = 2f;
     private float invicibleCounter;
@@ -28,7 +26,7 @@ public class Player : MonoBehaviour, IDamageTarget
     private AnimatorClipInfo[] animatorinfo;
     private PlayerState currentState;
 
-    [SerializeField] private string currentStateName = "";
+    [SerializeField] public string currentStateName { get; private set; } = "";
 
     [Header("Animation")]
     [SerializeField] private AnimatorController animatorController;
@@ -56,10 +54,9 @@ public class Player : MonoBehaviour, IDamageTarget
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider = GetComponent<BoxCollider2D>();
         animatorController = GetComponent<AnimatorController>(); 
 
         invicibleCounter = 0;
@@ -99,13 +96,14 @@ public class Player : MonoBehaviour, IDamageTarget
 
             currentState = componentInObject as PlayerState;
             currentState.SetEnemyGameObject(this);
-            currentState.SetRigidBody2D(rigidbody);
+            currentState.SetRigidBody2D(playerRigidbody);
             currentState.SetSpriteRenderer(spriteRenderer);
 
             if (currentState.GetAnimationClip() != null)
             {
                 animatorController.Play(currentState.GetAnimationClip());
             }
+
             currentState.OnEnterState();
             currentStateName = typeof(T).Name;
         }
@@ -123,9 +121,9 @@ public class Player : MonoBehaviour, IDamageTarget
     void Update()
     {
         currentState.OnUpdateState();
-
         
         //TODO: create a new state for jump???
+        /*
         isGrounded = Physics2D.OverlapCircle(GroundCheckPoint.transform.position, .2f, WhatLayerIsGround);
 
         if (Input.GetButtonDown("Jump")) // && isGrounded)
@@ -133,8 +131,9 @@ public class Player : MonoBehaviour, IDamageTarget
             var audioId = Random.Range(15, 17);
             PlayerSounds.Instance.PlayJumpPunk();
 
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, JumpForce);
+            playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, JumpForce);
         }
+        */
 
         //TODO: debug purpose
         if (Input.GetKeyDown(KeyCode.G))
@@ -151,7 +150,6 @@ public class Player : MonoBehaviour, IDamageTarget
                 this.ConvertToZen();
             }
         }
-        
 
         //TODO: should we need to delete this part
         if (invicibleCounter >= 0)
@@ -193,7 +191,7 @@ public class Player : MonoBehaviour, IDamageTarget
         if (!animator.GetBool("ZenContinue"))
         {
             PlayerSounds.Instance.PlayTransformationZen();
-            ExecuteState<MonkZenState>();
+            ExecuteState<MonkZenTransformationState>();
         }
     }
 
@@ -203,7 +201,6 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.playerMode = PlayerMode.MONK;
             ExecuteState<FireballState>();
-            boxCollider.offset = new Vector2(boxCollider.offset.x, -0.05f);
         }
     }
 
@@ -213,9 +210,7 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             this.playerMode = PlayerMode.PUNK;
             ExecuteState<PunkIdleState>();
-            boxCollider.offset = new Vector2(boxCollider.offset.x, 0f);
         }
-
     }
 
     public void Charge(int value)
@@ -240,11 +235,25 @@ public class Player : MonoBehaviour, IDamageTarget
     public void Bounce()
     {
         var xbounceForce = bounceForce;
-        if (this.rigidbody.velocity.x > 0)
+        if (this.playerRigidbody.velocity.x > 0)
             xbounceForce *= -1f;
 
-        rigidbody.velocity = new Vector2(xbounceForce, bounceForce);
+        playerRigidbody.velocity = new Vector2(xbounceForce, bounceForce);
 
         PlayerSounds.Instance.PlayPunch();
+    }
+
+    public void MoveHorizontally()
+    {
+        playerRigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), playerRigidbody.velocity.y);
+
+        if (playerRigidbody.velocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (playerRigidbody.velocity.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 }

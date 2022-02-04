@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
@@ -51,6 +49,19 @@ public class GameLogic : MonoBehaviour
         {
             AudioManager.Instance.PlayMusicNext();
         }
+
+
+        /*
+        if (player.chargeCount >= 0)
+        {
+            player.chargeCount -= Time.deltaTime;
+            if (player.chargeCount <= 0)
+            {
+                player.Charge(10);
+                player.chargeCount = player.chargeLenght;
+            }
+        }
+        */
     }
 
     public void Charge2(int value)
@@ -62,7 +73,6 @@ public class GameLogic : MonoBehaviour
     public void Charge(int value)
     {
     }
-
 
     public void CheckCharge()
     {

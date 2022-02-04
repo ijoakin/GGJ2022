@@ -8,7 +8,7 @@ public class PunchController : MonoBehaviour
     [SerializeField] private int damagePoints = 1;
     [SerializeField] private float autoDestroyDelay = 4f;
 
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D playerRigidbody2D;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -35,22 +35,22 @@ public class PunchController : MonoBehaviour
 
     public void Punch(Vector2 force)
     {
-        if (rigidbody2D == null)
+        if (playerRigidbody2D == null)
         {
-            rigidbody2D = this.GetComponent<Rigidbody2D>();
+            playerRigidbody2D = this.GetComponent<Rigidbody2D>();
         }
 
         var angle = Mathf.Atan2(force.y, force.x) * Mathf.Rad2Deg;
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
-        rigidbody2D.AddForce(force, ForceMode2D.Impulse);
+        playerRigidbody2D.AddForce(force, ForceMode2D.Impulse);
 
         Destroy(this.gameObject, autoDestroyDelay);
     }
     public void Punch()
     {
-        if (rigidbody2D == null)
+        if (playerRigidbody2D == null)
         {
-            rigidbody2D = this.GetComponent<Rigidbody2D>();
+            playerRigidbody2D = this.GetComponent<Rigidbody2D>();
         }
 
         Destroy(this.gameObject, autoDestroyDelay);
