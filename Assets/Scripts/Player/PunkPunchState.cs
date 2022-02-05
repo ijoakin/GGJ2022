@@ -5,8 +5,8 @@ public class PunkPunchState : PlayerState
     public override void OnEnterState()
     {
         base.OnEnterState();
-        //player.Punch();
-        //PlayerSounds.Instance.PlayPunch();
+        player.Punch();
+        PlayerSounds.Instance.PlayPunch();
     }
 
     public void OnAnimationEndedPunch()

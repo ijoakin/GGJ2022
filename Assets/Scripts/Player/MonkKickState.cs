@@ -1,15 +1,15 @@
-﻿public class MonkKickState : PlayerState
+﻿using UnityEngine;
+
+public class MonkKickState : PlayerState
 {
+    public float KickHeight = 3.0f;
+
     public override void OnEnterState()
     {
         base.OnEnterState();
-        //player.Punch();
+        player.Punch();
         PlayerSounds.Instance.PlayPunch();
-    }
-
-    public override void OnExitState()
-    {
-        //rigidbody.velocity = new Vector2(playerGameObject.MoveSpeed * Input.GetAxis("Horizontal"), rigidbody.velocity.y);
+        player.PushVertically(KickHeight);
     }
 
     public void OnAnimationEndedKick()

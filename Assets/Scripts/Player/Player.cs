@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageTarget
@@ -26,7 +23,7 @@ public class Player : MonoBehaviour, IDamageTarget
     private AnimatorClipInfo[] animatorinfo;
     private PlayerState currentState;
 
-    [SerializeField] public string currentStateName { get; private set; } = "";
+    public string currentStateName { get; private set; } = "";
 
     [Header("Animation")]
     [SerializeField] private AnimatorController animatorController;
@@ -41,7 +38,8 @@ public class Player : MonoBehaviour, IDamageTarget
     public enum PlayerMode
     {
         PUNK = 0,
-        MONK = 1
+        MONK = 1,
+        ZEN = 2
     }
 
     private PlayerMode playerMode;
@@ -66,10 +64,12 @@ public class Player : MonoBehaviour, IDamageTarget
 
         ExecuteState<PunkIdleState>();
     }
+
     public void PlayAnimation()
     {
         PlayAnimation(currentState);
     }
+
     public void PlayAnimation(PlayerState stateId)
     {
         if (animator == null)
@@ -143,11 +143,15 @@ public class Player : MonoBehaviour, IDamageTarget
             else if (playerMode == PlayerMode.MONK)
                 this.ConvertToPunk();
         }
-        if (playerMode == PlayerMode.MONK)
+        else if (Input.GetKeyDown(KeyCode.F))
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (playerMode == PlayerMode.MONK)
             {
                 this.ConvertToZen();
+            }
+            else if (playerMode == PlayerMode.ZEN)
+            {
+                this.ConvertToPunk();
             }
         }
 
@@ -188,9 +192,9 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void ConvertToZen()
     {
-        if (!animator.GetBool("ZenContinue"))
+        if (playerMode != PlayerMode.ZEN)
         {
-            PlayerSounds.Instance.PlayTransformationZen();
+            this.playerMode = PlayerMode.ZEN;
             ExecuteState<MonkZenTransformationState>();
         }
     }
@@ -243,9 +247,9 @@ public class Player : MonoBehaviour, IDamageTarget
         PlayerSounds.Instance.PlayPunch();
     }
 
-    public void MoveHorizontally()
+    public void MoveHorizontally(float multiplyer = 1.0f)
     {
-        playerRigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal"), playerRigidbody.velocity.y);
+        playerRigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal") * multiplyer, playerRigidbody.velocity.y);
 
         if (playerRigidbody.velocity.x < 0)
         {
@@ -255,5 +259,10 @@ public class Player : MonoBehaviour, IDamageTarget
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public void PushVertically(float force = 0.0f)
+    {
+        playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, force);
     }
 }

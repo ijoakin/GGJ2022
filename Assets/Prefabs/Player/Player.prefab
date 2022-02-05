@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: b4448bf3047e5df40950b29b4a73e18e, type: 2}
+  MoveFactor: 1.25
 --- !u!114 &1743334522407778280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: 2461e668c75af1d45bd058f4f8594a81, type: 2}
+  KickHeight: 3
 --- !u!114 &5501997600049113270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: 2fdf6d5136b681242ae7653ddc827a4f, type: 2}
+  TransformationJump: 5
 --- !u!114 &5089486557152202550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,6 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: 5f6fd6e27c1c278419a70135c70bb313, type: 2}
+  MoveFactor: 0.9
 --- !u!1 &6004952763806033847
 GameObject:
   m_ObjectHideFlags: 0

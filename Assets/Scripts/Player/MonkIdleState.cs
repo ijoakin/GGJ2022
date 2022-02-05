@@ -4,14 +4,15 @@ public class MonkIdleState : PlayerState
 {
     public override void OnUpdateState()
     {
-        playerRigidbody.velocity = new Vector2(player.MoveSpeed * Input.GetAxis("Horizontal"), playerRigidbody.velocity.y);
+        player.MoveHorizontally();
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            player.ExecuteState<MonkKickState>();
-        } else if (playerRigidbody.velocity.x != 0)
+        if (playerRigidbody.velocity.x != 0)
         {
             player.ExecuteState<MonkRunState>();
+        }
+        else if (Input.GetButtonDown("Fire1"))
+        {
+            player.ExecuteState<MonkKickState>();
         }
     }
 }

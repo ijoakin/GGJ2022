@@ -1,23 +1,17 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MonkZenTransformationState : PlayerState
 {
-    private float waitDuration = 0.5f;
+    public float TransformationJump = 5.0f;
 
     public override void OnEnterState()
     {
         base.OnEnterState();
-        StartCoroutine(Wait());
+        PlayerSounds.Instance.PlayTransformationZen();
+        player.PushVertically(TransformationJump);
     }
-
-    public override void OnExitState()
+    public void OnAnimationEndedZenTransformation()
     {
-    }
-
-    private IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(waitDuration);
         player.ExecuteState<MonkZenState>();
     }
 }

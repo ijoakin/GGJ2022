@@ -11,6 +11,8 @@ public class AnimatorController : MonoBehaviour
             animator = GetComponent<Animator>();
         }
 
+        //Debug.Log("Playing " + animationClip.name);
+
         // -1 and 0.0f prevents button smashing from animation ending triggers not being dispatched
         animator.Play(animationClip.name.ToString(), -1, 0.0f);
     }
