@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 7844785484820535653}
   - component: {fileID: 5707031769012427641}
   - component: {fileID: 1743334522407778280}
-  - component: {fileID: 5501997600049113270}
-  - component: {fileID: 5089486557152202550}
+  - component: {fileID: 4215817089225846931}
+  - component: {fileID: 412300466776645739}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: 2461e668c75af1d45bd058f4f8594a81, type: 2}
   KickHeight: 3
---- !u!114 &5501997600049113270
+--- !u!114 &4215817089225846931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,25 +318,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6004952763649376805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852d9326514a4564c8771b1e3968fc34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimation: {fileID: 7400000, guid: 2fdf6d5136b681242ae7653ddc827a4f, type: 2}
-  TransformationJump: 5
---- !u!114 &5089486557152202550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6004952763649376805}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc93fcbfad53dff4fb17a2a8a5367bc0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c3ccaee08e9e4778960b50036fbfd09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimation: {fileID: 7400000, guid: 5f6fd6e27c1c278419a70135c70bb313, type: 2}
   MoveFactor: 0.9
+--- !u!114 &412300466776645739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004952763649376805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6de5d7754ce4b5f9e42e6b17adc0b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimation: {fileID: 7400000, guid: 2fdf6d5136b681242ae7653ddc827a4f, type: 2}
+  TransformationJump: 5
 --- !u!1 &6004952763806033847
 GameObject:
   m_ObjectHideFlags: 0
