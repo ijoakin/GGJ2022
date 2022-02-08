@@ -18,4 +18,10 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Credits");
     }
+
+    public void ExitButton()
+    {
+        // TODO: Confirmation dialog
+        Application.Quit();
+    }
 }

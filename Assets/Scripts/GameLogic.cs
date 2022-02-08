@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour
 {
@@ -44,6 +45,11 @@ public class GameLogic : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Z))
         {
             Charge2(-10);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // TODO: Confirmation dialog
+            SceneManager.LoadScene("MainMenu");
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
