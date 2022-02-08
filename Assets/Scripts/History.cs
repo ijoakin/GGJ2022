@@ -87,6 +87,12 @@ public class History : MonoBehaviour
 
     public void Next()
     {
+        // Avoid multiple clicks
+        if (isFading)
+        {
+            return;
+        }
+
         nextSlide = currentSlide + 1;
         if (nextSlide >= Slides.Length)
         {
@@ -100,6 +106,12 @@ public class History : MonoBehaviour
 
     public void Prev()
     {
+        // Avoid multiple clicks
+        if (isFading)
+        {
+            return;
+        }
+
         nextSlide = currentSlide - 1;
         if (nextSlide < 0)
         {
