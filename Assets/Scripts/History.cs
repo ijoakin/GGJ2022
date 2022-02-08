@@ -20,7 +20,6 @@ public class History : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
     }
 
     // Start is called before the first frame update
@@ -29,12 +28,25 @@ public class History : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentSlide = 0;
         spriteRenderer.sprite = Slides[currentSlide];
+
+        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
+
+        // Upscale for temporary sprites
         spriteRenderer.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Debug
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        }
+
         if (isFading)
         {
             Color color;

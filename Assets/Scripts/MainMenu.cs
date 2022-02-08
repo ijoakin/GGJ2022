@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK);
+        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.TRANS);
     }
 
     public void PlayButton()
