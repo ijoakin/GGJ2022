@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8372375988043905408}
-  m_RootOrder: 20
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5848593423755751393
 AudioSource:
@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5d574237765b24f149b37ca8ee84531e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 7eacb97c0ce9441d396d94fb01349ca6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2206,7 +2206,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8372375988043905408}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8940934032425115873
 AudioSource:
@@ -3513,6 +3513,7 @@ Transform:
   - {fileID: 1344305011943816908}
   - {fileID: 8846423158658359023}
   - {fileID: 6575262207832179915}
+  - {fileID: 8372375988557692346}
   m_Father: {fileID: 8372375989152433011}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3655,7 +3656,7 @@ GameObject:
   - component: {fileID: 8372375987551679247}
   - component: {fileID: 8372375987551679246}
   m_Layer: 0
-  m_Name: Monje_Salta1
+  m_Name: Monje_Patada1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4330,7 +4331,6 @@ Transform:
   - {fileID: 8414341466103645938}
   - {fileID: 2952338618446569271}
   - {fileID: 3619958420990723584}
-  - {fileID: 8372375988557692346}
   - {fileID: 6957680387449104816}
   - {fileID: 4859576392992853785}
   m_Father: {fileID: 8372375989152433011}
@@ -4347,7 +4347,7 @@ GameObject:
   - component: {fileID: 8372375988217624118}
   - component: {fileID: 8372375988217624119}
   m_Layer: 0
-  m_Name: Monje_Salta2
+  m_Name: Monje_Patada2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5005,8 +5005,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8372375988043905408}
-  m_RootOrder: 18
+  m_Father: {fileID: 8372375987309815732}
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8372375988557692293
 AudioSource:
@@ -5939,7 +5939,6 @@ MonoBehaviour:
   - {fileID: 8372375987672902174}
   - {fileID: 8372375988872006555}
   - {fileID: 92788724795908982}
-  - {fileID: 8372375988557692293}
   SoundEffects:
   - {fileID: 8372375988538255570}
   - {fileID: 8372375988752825831}
@@ -5965,6 +5964,7 @@ MonoBehaviour:
   - {fileID: 1665903043325609348}
   - {fileID: 3750981345554300417}
   - {fileID: 4021567921279473671}
+  - {fileID: 8372375988557692293}
 --- !u!1 &8565384957120362782
 GameObject:
   m_ObjectHideFlags: 0

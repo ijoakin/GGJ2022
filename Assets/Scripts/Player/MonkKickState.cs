@@ -8,7 +8,7 @@ public class MonkKickState : PlayerState
     {
         base.OnEnterState();
         player.Punch();
-        PlayerSounds.Instance.PlayPunch();
+        PlayerSounds.Instance.PlayKick();
         player.PushVertically(KickHeight);
     }
 

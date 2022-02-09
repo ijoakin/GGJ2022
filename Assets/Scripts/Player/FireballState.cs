@@ -3,7 +3,6 @@
     public override void OnEnterState()
     {
         base.OnEnterState();
-        PlayerSounds.Instance.PlayTransformation();
     }
 
     public void OnAnimationEndedFireball()

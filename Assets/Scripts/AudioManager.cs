@@ -19,20 +19,16 @@ public class AudioManager : MonoBehaviour
         PUNK_SALTO_2,
         PUNK_SALTO_3,
 
-        PUNK_IRA_AL_80_1,
-        PUNK_IRA_AL_80_2,
-        PUNK_IRA_AL_80_3,
-
         PUNK_ERRA_1,
         PUNK_ERRA_2,
         PUNK_ERRA_3,
         PUNK_ERRA_4,
         PUNK_ERRA_5,
 
-        MONJE_SALTA_1,
-        MONJE_SALTA_2,
+        MONJE_PATADA_1,
+        MONJE_PATADA_2,
 
-        MONJE_TRANS,
+        MONJE_AL_100,
 
         PUNK_PINA_1,
         PUNK_PINA_2,
@@ -49,6 +45,8 @@ public class AudioManager : MonoBehaviour
         ENEMIGO_SANGRE_3,
         ENEMIGO_SANGRE_4,
         ENEMIGO_SANGRE_5,
+
+        MONJE_TRANSFORMACION,
 
         LAST
     }
@@ -70,9 +68,17 @@ public class AudioManager : MonoBehaviour
         PUNK_UP_5,
         PUNK_UP_6,
 
-        TRANS,
-        MONK,
-        MONK_ZEN,
+        MONJE,
+        MONJE_ZEN,
+
+        MONJE_A_PUNK,
+
+        PUNK_IRA_1,
+        PUNK_IRA_2,
+        PUNK_IRA_3,
+
+        ZEN_A_MONJE,
+
         LAST
     }
 
@@ -116,7 +122,7 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(int soundToPlay)
     {
         SoundEffects[soundToPlay].Stop();
-        SoundEffects[soundToPlay].pitch = Random.Range(.9f, 1.1f);
+        SoundEffects[soundToPlay].pitch = Random.Range(0.95f, 1.05f);
         SoundEffects[soundToPlay].Play();
     }
 

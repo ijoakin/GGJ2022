@@ -7,7 +7,6 @@ public class MonkZenTransformationState : PlayerState
     public override void OnEnterState()
     {
         base.OnEnterState();
-        PlayerSounds.Instance.PlayTransformationZen();
         player.PushVertically(TransformationJump);
     }
     public void OnAnimationEndedZenTransformation()

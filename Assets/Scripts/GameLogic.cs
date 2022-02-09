@@ -93,7 +93,8 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.ZEN;
                 Player.Instance.ConvertToZen();
-                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN, AudioManager.MusicId.TRANS);
+                AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_AL_100);
+                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE_ZEN);
             }
         }
         else if (CurrentCharge <= THRESHOLD_FURY)
@@ -101,25 +102,36 @@ public class GameLogic : MonoBehaviour
             if (ChargeState != ChargeStates.FURY)
             {
                 ChargeState = ChargeStates.FURY;
-                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, AudioManager.MusicId.TRANS);
+
+                int transitionMusic = Random.Range((int)AudioManager.MusicId.PUNK_IRA_1, (int)AudioManager.MusicId.PUNK_IRA_3 + 1);
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, (AudioManager.MusicId)transitionMusic);
             }
         }
         else if (CurrentCharge >= THRESHOLD_MONK && CurrentCharge < THRESHOLD_ZEN)
         {
             if (ChargeState != ChargeStates.MONK)
             {
+                if (ChargeState == ChargeStates.PUNK)
+                {
+                    AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_TRANSFORMACION);
+                    AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE);
+                }
+                else if (ChargeState == ChargeStates.ZEN)
+                {
+                    AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE, AudioManager.MusicId.ZEN_A_MONJE);
+                }
+
                 ChargeState = ChargeStates.MONK;
                 Player.Instance.ConvertToMonk();
-                AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK, AudioManager.MusicId.TRANS);
             }
         }
         else if (CurrentCharge < THRESHOLD_MONK)
         {
             if (ChargeState != ChargeStates.PUNK)
             {
+                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7, AudioManager.MusicId.MONJE_A_PUNK);
                 ChargeState = ChargeStates.PUNK;
                 Player.Instance.ConvertToPunk();
-                AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7, AudioManager.MusicId.TRANS);
             }
         }
     }

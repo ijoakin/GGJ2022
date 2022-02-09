@@ -29,7 +29,7 @@ public class History : MonoBehaviour
         currentSlide = 0;
         spriteRenderer.sprite = Slides[currentSlide];
 
-        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONK_ZEN);
+        AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE_ZEN);
 
         // Upscale for temporary sprites
         spriteRenderer.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
