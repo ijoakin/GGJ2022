@@ -6540,7 +6540,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8372375989152433010, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: MusicON
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8372375989152433011, guid: 54d2653c5bbcc024fa58563ab0a571ea, type: 3}
       propertyPath: m_RootOrder
