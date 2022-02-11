@@ -107,6 +107,7 @@ public class GameLogic : MonoBehaviour
                 AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_UP_1, AudioManager.MusicId.PUNK_UP_6, (AudioManager.MusicId)transitionMusic);
             }
         }
+        // Punk
         else if (CurrentCharge >= THRESHOLD_MONK && CurrentCharge < THRESHOLD_ZEN)
         {
             if (ChargeState != ChargeStates.MONK)

@@ -8,6 +8,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource[] MusicFiles;
     public AudioSource[] SoundEffects;
 
+    public bool MusicON = true;
+    public bool SoundON = true;
+
     private MusicPlayerController musicPlayerController;
 
     private int randomMin;
@@ -96,31 +99,37 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        if (!MusicON) return;
         musicPlayerController.PlayMusic(_musicId, _transMusicId);
     }
 
     public void PlayMusicLoop(MusicId _musicId, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        if (!MusicON) return;
         musicPlayerController.PlayMusicLoop(_musicId, _transMusicId);
     }
 
     public void PlayMusicNext()
     {
+        if (!MusicON) return;
         musicPlayerController.PlayMusicNext();
     }
 
     public void PlayMusicRandomLoop(AudioManager.MusicId _randomMin, AudioManager.MusicId _randomMax, AudioManager.MusicId _transMusicId = AudioManager.MusicId.LAST)
     {
+        if (!MusicON) return;
         musicPlayerController.PlayMusicRandomLoop((int)_randomMin, (int)_randomMax, _transMusicId);
     }
 
     public void PlaySFX(AudioId audioId)
     {
+        if (!SoundON) return;
         PlaySFX((int)audioId);
     }
 
     public void PlaySFX(int soundToPlay)
     {
+        if (!SoundON) return;
         SoundEffects[soundToPlay].Stop();
         SoundEffects[soundToPlay].pitch = Random.Range(0.95f, 1.05f);
         SoundEffects[soundToPlay].Play();
@@ -128,6 +137,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFXRandom(AudioId audioMin, AudioId audioMax)
     {
+        if (!SoundON) return;
         randomMin = (int)audioMin;
         randomMax = (int)audioMax;
         if (randomMax <= randomMin)
