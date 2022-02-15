@@ -93,7 +93,7 @@ public class GameLogic : MonoBehaviour
             {
                 ChargeState = ChargeStates.ZEN;
                 Player.Instance.ConvertToZen();
-                AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_AL_100);
+                AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_AL_100, false);
                 AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE_ZEN);
             }
         }
@@ -114,7 +114,7 @@ public class GameLogic : MonoBehaviour
             {
                 if (ChargeState == ChargeStates.PUNK)
                 {
-                    AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_TRANSFORMACION);
+                    AudioManager.Instance.PlaySFX(AudioManager.AudioId.MONJE_TRANSFORMACION, false);
                     AudioManager.Instance.PlayMusicLoop(AudioManager.MusicId.MONJE);
                 }
                 else if (ChargeState == ChargeStates.ZEN)

@@ -121,17 +121,22 @@ public class AudioManager : MonoBehaviour
         musicPlayerController.PlayMusicRandomLoop((int)_randomMin, (int)_randomMax, _transMusicId);
     }
 
-    public void PlaySFX(AudioId audioId)
+    public void PlaySFX(AudioId audioId, bool pitch = true)
     {
         if (!SoundON) return;
-        PlaySFX((int)audioId);
+        PlaySFX((int)audioId, pitch);
     }
 
-    public void PlaySFX(int soundToPlay)
+    public void PlaySFX(int soundToPlay, bool pitch = true)
     {
         if (!SoundON) return;
         SoundEffects[soundToPlay].Stop();
-        SoundEffects[soundToPlay].pitch = Random.Range(0.95f, 1.05f);
+
+        if (pitch)
+        {
+            SoundEffects[soundToPlay].pitch = Random.Range(0.95f, 1.05f);
+        }
+
         SoundEffects[soundToPlay].Play();
     }
 
