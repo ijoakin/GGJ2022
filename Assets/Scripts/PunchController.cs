@@ -55,4 +55,13 @@ public class PunchController : MonoBehaviour
 
         Destroy(this.gameObject, autoDestroyDelay);
     }
+
+#if UNITY_EDITOR
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(this.transform.position, new Vector2(1f, 1f));
+    }
+
+#endif
 }

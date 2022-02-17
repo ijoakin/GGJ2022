@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageTarget
@@ -9,12 +10,18 @@ public class Player : MonoBehaviour, IDamageTarget
     public GameObject GroundCheckPoint;
     public LayerMask WhatLayerIsGround;
 
+
+    [Header("Player States")]
+    public bool isGrounded;
+    public bool playerIsJumping;
+    public bool playerIsDead = false;
+    public bool playerIsRecovering;
+
     private Rigidbody2D playerRigidbody;
-    private bool isGrounded;
     private Animator animator;
-    private SpriteRenderer spriteRenderer;
+    internal SpriteRenderer spriteRenderer;
     
-    private float invicibleLenght = 2f;
+   // private float invicibleLenght = 2f;
     private float invicibleCounter;
 
     public float chargeCount;
@@ -23,6 +30,9 @@ public class Player : MonoBehaviour, IDamageTarget
     private AnimatorClipInfo[] animatorinfo;
     private PlayerState currentState;
 
+    // Control Variables
+    private Vector2 movementDirection;
+    public float nonZeroMovementX;
     public string currentStateName { get; private set; } = "";
 
     [Header("Animation")]
@@ -31,6 +41,13 @@ public class Player : MonoBehaviour, IDamageTarget
     [Header("Attack")]
     [SerializeField] private PunchController punchController;
     [SerializeField] private GameObject punchPrefab;
+
+    [Header("Health Variables")]
+    [SerializeField] private SpriteBlinkEffect spriteBlinkEffect;
+
+    [Header("Player interruptions")]
+    public bool canMove;
+
 
     [SerializeField]
     private int damagePoints;
@@ -47,6 +64,7 @@ public class Player : MonoBehaviour, IDamageTarget
     private void Awake()
     {
         Instance = this;
+        canMove =true;
     }
 
     // Start is called before the first frame update
@@ -171,12 +189,14 @@ public class Player : MonoBehaviour, IDamageTarget
     {
         Charge(-5);
         float offsetX = 1;
+        Vector2 playerVector = new Vector2();
         if (playerMode == PlayerMode.PUNK)
         {
             if (!spriteRenderer.flipX)
             {
                 offsetX = offsetX  * -1;
             }
+            playerVector = new Vector2(this.transform.position.x + offsetX * -1.75f, this.transform.position.y + 2f);
         }
         else
         {
@@ -184,9 +204,10 @@ public class Player : MonoBehaviour, IDamageTarget
             {
                 offsetX = offsetX * -1;
             }
+            playerVector = new Vector2(this.transform.position.x + offsetX * 1.75f, this.transform.position.y + 2f);
         }
 
-        var punch = Instantiate(this.punchPrefab, new Vector2(this.transform.position.x + offsetX, this.transform.position.y) , this.transform.rotation);
+        var punch = Instantiate(this.punchPrefab, playerVector, this.transform.rotation);
         punch.GetComponent<PunchController>().Punch();
     }
 
@@ -224,32 +245,28 @@ public class Player : MonoBehaviour, IDamageTarget
 
     public void TakeDamage(int damagePoints)
     {
+        if (playerIsDead || playerIsRecovering) return;
+
         damagePoints = -5;
-        //throw new System.NotImplementedException();
-        var isFigthing = (animator.GetBool("Punch") || animator.GetBool("Monk_Kick"));
+        GameLogic.Instance.Charge(damagePoints);
 
-        if (!isFigthing)
-        {
-            Bounce();
-            invicibleCounter = invicibleLenght;
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, .5f);
-            GameLogic.Instance.Charge(damagePoints);
-        }
-    }
-    public void Bounce()
-    {
-        var xbounceForce = bounceForce;
-        if (this.playerRigidbody.velocity.x > 0)
-            xbounceForce *= -1f;
+        
+        // TODO: Como se va a morir?
+        // Si no esta muerto entonces si recibe dano lanzo fase de recovery
 
-        playerRigidbody.velocity = new Vector2(xbounceForce, bounceForce);
-
-        PlayerSounds.Instance.PlayPunch();
+        StartCoroutine(StartPlayerRecovering());
     }
 
     public void MoveHorizontally(float multiplyer = 1.0f)
     {
+        if(!canMove) return;
         playerRigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal") * multiplyer, playerRigidbody.velocity.y);
+
+        movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (Mathf.Abs(movementDirection.x) > 0)
+        {
+            nonZeroMovementX = movementDirection.x;
+        }
 
         if (playerRigidbody.velocity.x < 0)
         {
@@ -264,5 +281,28 @@ public class Player : MonoBehaviour, IDamageTarget
     public void PushVertically(float force = 0.0f)
     {
         playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, force);
+    }
+    public IEnumerator StartPlayerRecovering()
+    {
+        spriteBlinkEffect.PlayBlinkEffect();
+        playerIsRecovering = true;
+        canMove = false;
+        if (this.playerMode == PlayerMode.PUNK)
+        {
+            ExecuteState<PunkHurtState>();
+        }
+
+        playerRigidbody.AddForce(Vector2.left * Mathf.Sign(nonZeroMovementX) * 12, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        canMove = true;
+        playerRigidbody.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(.5f);
+        playerIsRecovering = false;
+        spriteBlinkEffect.StopBlinkEffect();
+        if (this.playerMode == PlayerMode.PUNK)
+        {
+            ExecuteState<PunkIdleState>();
+        }
     }
 }
