@@ -10,7 +10,7 @@ public class PunkWalkState : PlayerState
         {
             player.ExecuteState<PunkIdleState>();
         }
-        else if (Input.GetButtonDown("Fire1"))
+        else if (player.Attack)
         {
             player.ExecuteState<PunkPunchState>();
         }

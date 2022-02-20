@@ -12,7 +12,7 @@ public class MonkRunState : PlayerState
         {
             player.ExecuteState<MonkIdleState>();
         }
-        else if (Input.GetButtonDown("Fire1"))
+        else if (player.Attack)
         {
             player.ExecuteState<MonkKickState>();
         }

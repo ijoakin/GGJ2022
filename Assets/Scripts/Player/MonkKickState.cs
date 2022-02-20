@@ -15,5 +15,6 @@ public class MonkKickState : PlayerState
     public void OnAnimationEndedKick()
     {
         player.ExecuteState<MonkIdleState>();
+        player.Attack = false;
     }
 }

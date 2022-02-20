@@ -12,7 +12,7 @@ public class PunkPunchState : PlayerState
     public void OnAnimationEndedPunch()
     {
         player.ExecuteState<PunkIdleState>();
-
+        player.Attack = false;
         //TODO: Move to OnCollide()
         AudioManager.Instance.PlaySFXRandom(AudioManager.AudioId.PUNK_PINA_1, AudioManager.AudioId.PUNK_PINA_5);
     }

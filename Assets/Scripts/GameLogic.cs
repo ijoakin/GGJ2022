@@ -34,29 +34,32 @@ public class GameLogic : MonoBehaviour
         ChargeState = ChargeStates.PUNK;
         AudioManager.Instance.PlayMusicRandomLoop(AudioManager.MusicId.PUNK_DOWN_1, AudioManager.MusicId.PUNK_DOWN_7);
     }
+    #region "Debug"
+    //TODO: Remove all of this methods 
+    public void HandleC()
+    {
+        Charge2(10);
+    }
+    public void HandleZ()
+    {
+        Charge2(-10);
+    }
+
+    public void HandleEscape()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void HandleX()
+    {
+        AudioManager.Instance.PlayMusicNext();
+    }
+
+
+    #endregion
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Charge2(10);
-        }
-        else if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Charge2(-10);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            // TODO: Confirmation dialog
-            SceneManager.LoadScene("MainMenu");
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            AudioManager.Instance.PlayMusicNext();
-        }
-
-
         /*
         if (player.chargeCount >= 0)
         {

@@ -15,7 +15,7 @@ public class PunkHurtState : PlayerState
 
     public void OnAnimationEndedPunch()
     {
-        player.ExecuteState<PunkIdleState>();
+        //player.ExecuteState<PunkIdleState>();
         Debug.Log("Punk recibio damage");
         //TODO: Move to OnCollide()
         //AudioManager.Instance.PlaySFXRandom(AudioManager.AudioId., AudioManager.AudioId.PUNK_PINA_5);

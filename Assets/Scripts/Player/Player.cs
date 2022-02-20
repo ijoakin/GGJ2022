@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, IDamageTarget
 {
@@ -51,6 +52,10 @@ public class Player : MonoBehaviour, IDamageTarget
 
     [SerializeField]
     private int damagePoints;
+
+    public Vector2 rawInputMovement;
+    public bool Attack = false;
+    public bool Jump = false;
 
     public enum PlayerMode
     {
@@ -153,25 +158,6 @@ public class Player : MonoBehaviour, IDamageTarget
         }
         */
 
-        //TODO: debug purpose
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            if (playerMode == PlayerMode.PUNK)
-                this.ConvertToMonk();
-            else if (playerMode == PlayerMode.MONK)
-                this.ConvertToPunk();
-        }
-        else if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (playerMode == PlayerMode.MONK)
-            {
-                this.ConvertToZen();
-            }
-            else if (playerMode == PlayerMode.ZEN)
-            {
-                this.ConvertToPunk();
-            }
-        }
 
         //TODO: should we need to delete this part
         if (invicibleCounter >= 0)
@@ -260,9 +246,10 @@ public class Player : MonoBehaviour, IDamageTarget
     public void MoveHorizontally(float multiplyer = 1.0f)
     {
         if(!canMove) return;
-        playerRigidbody.velocity = new Vector2(MoveSpeed * Input.GetAxis("Horizontal") * multiplyer, playerRigidbody.velocity.y);
+        playerRigidbody.velocity = new Vector2(MoveSpeed * rawInputMovement.x * multiplyer, playerRigidbody.velocity.y);
 
-        movementDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        movementDirection = rawInputMovement;
+
         if (Mathf.Abs(movementDirection.x) > 0)
         {
             nonZeroMovementX = movementDirection.x;
@@ -290,6 +277,10 @@ public class Player : MonoBehaviour, IDamageTarget
         if (this.playerMode == PlayerMode.PUNK)
         {
             ExecuteState<PunkHurtState>();
+        }
+        else
+        {
+            //TODO: ExecuteState<MonkHurtState>();
         }
 
         playerRigidbody.AddForce(Vector2.left * Mathf.Sign(nonZeroMovementX) * 12, ForceMode2D.Impulse);
