@@ -37,7 +37,7 @@ public class History : MonoBehaviour
 
     public void EscapeHandle()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 
