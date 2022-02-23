@@ -484,7 +484,9 @@ PrefabInstance:
         Graphic Artist
 
         Interactive Environmental
-        Lead Programmer'
+        Lead Programmer
+
+        Aditional Art'
       objectReference: {fileID: 0}
     - target: {fileID: 5928508804733084113, guid: b18068c5b76772c438d105c216dacd8c, type: 3}
       propertyPath: m_fontSize
@@ -810,7 +812,9 @@ PrefabInstance:
         Luis Zuno
 
         nano
-        Lopez'
+        Lopez
+
+        Nicolas Damatu'
       objectReference: {fileID: 0}
     - target: {fileID: 5928508804733084113, guid: b18068c5b76772c438d105c216dacd8c, type: 3}
       propertyPath: m_fontSize
