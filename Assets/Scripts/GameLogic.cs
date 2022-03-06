@@ -38,11 +38,11 @@ public class GameLogic : MonoBehaviour
     //TODO: Remove all of this methods 
     public void HandleC()
     {
-        Charge2(10);
+        Charge(10);
     }
     public void HandleZ()
     {
-        Charge2(-10);
+        Charge(-10);
     }
 
     public void HandleEscape()
@@ -73,14 +73,16 @@ public class GameLogic : MonoBehaviour
         */
     }
 
-    public void Charge2(int value)
+    public void Charge(int value)
     {
         CurrentCharge = Bar.Instance.Charge(value);
         CheckCharge();
-    }
 
-    public void Charge(int value)
-    {
+        if (CurrentCharge <= -100)
+        {
+            //TODO: Load Dead Scene !!!
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     public void CheckCharge()

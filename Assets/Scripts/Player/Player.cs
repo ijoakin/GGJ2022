@@ -236,10 +236,6 @@ public class Player : MonoBehaviour, IDamageTarget
         damagePoints = -5;
         GameLogic.Instance.Charge(damagePoints);
 
-        
-        // TODO: Como se va a morir?
-        // Si no esta muerto entonces si recibe dano lanzo fase de recovery
-
         StartCoroutine(StartPlayerRecovering());
     }
 
