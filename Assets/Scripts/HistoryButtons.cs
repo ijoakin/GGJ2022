@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HistoryButtons : MonoBehaviour
 {
+	//a bad comment
     public void MenuButton()
     {
         History.Instance.Menu();
